@@ -4,6 +4,9 @@ const dotenv = require("dotenv");
 
 dotenv.config();
 
+const movieRoutes = require("./routes/movieRoutes"); // TMDB api로부터 조회, 검색
+
+
 const app = express();
 
 app.use(
@@ -18,6 +21,8 @@ app.use(express.json());
 app.get("/", (req, res) => {
   res.json({ message: "mymvc02 backend server running" });
 });
+
+app.use("/api/movie", movieRoutes);
 
 const PORT = process.env.PORT || 9000;
 app.listen(PORT, () => {
