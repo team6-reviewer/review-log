@@ -1,5 +1,5 @@
 CREATE TABLE `review_Table` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT ,
   `title` text NOT NULL COMMENT '콘텐츠 제목',
   `score` double NOT NULL COMMENT '해당 콘텐츠의 평점',
   `content` text NOT NULL COMMENT '콘텐츠의 감상평',
