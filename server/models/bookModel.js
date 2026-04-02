@@ -16,6 +16,7 @@ exports.getTopBooks = async () => {
     const data = await response.json();
     
     return data.item.map(book => ({
+      id: book.itemId, // 알라딘 관리 도서 ID
       title: book.title, // 제목
       posterPath: (book.cover).replace('/coversum/', '/cover500/') || null // 표지경로, 없으면 null
     }));
@@ -39,6 +40,7 @@ exports.searchBookByTitle = async (title) => {
     const data = await response.json();
 
     return data.item.map(book => ({
+      id: book.itemId, // 알라딘 관리 도서 ID
       title: book.title, // 제목
       posterPath: (book.cover).replace('/coversum/', '/cover500/') || null // 표지경로, 없으면 null
     }));
