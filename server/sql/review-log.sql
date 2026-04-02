@@ -1,13 +1,13 @@
 CREATE DATABASE review_log_db;
 USE review_log_db;
 
-CREATE TABLE `user_Table` (
+CREATE TABLE `user_table` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT '사용자 식별용 고유번호',
   `username` varchar(20) NOT NULL UNIQUE COMMENT '사용자 아이디(중복불가)',
   `password` varchar(255) NOT NULL COMMENT '사용자 비밀번호(해시값저장)',
   `nickname` varchar(20) NOT NULL UNIQUE COMMENT '사용자 닉네임(중복불가)',
-  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '계정 생성 일시',
-  `refresh_token` varchar(255) NOT NULL UNIQUE COMMENT'JWT refresh token 보관용',
+  `createdAt` datetime  DEFAULT CURRENT_TIMESTAMP COMMENT '계정 생성 일시',
+  `refreshToken` varchar(512)  DEFAULT NULL COMMENT'JWT refresh token 보관용',
   PRIMARY KEY (`id`)
 );
 
