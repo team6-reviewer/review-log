@@ -3,47 +3,47 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
-      colors: {
-        border: "var(--border)",
-        input: "var(--input)",
-        ring: "var(--ring)",
-        background: "var(--background)",
-        foreground: "var(--foreground)",
-        primary: {
-          DEFAULT: "var(--primary)",
-          foreground: "var(--primary-foreground)",
-        },
-        secondary: {
-          DEFAULT: "var(--secondary)",
-          foreground: "var(--secondary-foreground)",
-        },
-        destructive: {
-          DEFAULT: "var(--destructive)",
-          foreground: "var(--destructive-foreground)",
-        },
-        muted: {
-          DEFAULT: "var(--muted)",
-          foreground: "var(--muted-foreground)",
-        },
-        accent: {
-          DEFAULT: "var(--accent)",
-          foreground: "var(--accent-foreground)",
-        },
-        popover: {
-          DEFAULT: "var(--popover)",
-          foreground: "var(--popover-foreground)",
-        },
-        card: {
-          DEFAULT: "var(--card)",
-          foreground: "var(--card-foreground)",
-        },
-      },
       borderRadius: {
-        lg: "var(--radius)",
+        lg: "var(--radius)", // 8px
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      colors: {
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        "main-gray": "hsl(var(--main-gray))",
+        "dark-gray": "hsl(var(--dark-gray))",
+        "light-gray": "hsl(var(--light-gray))",
+        black: "hsl(var(--black))",
+        destructive: "hsl(var(--destructive))",
+        "movie-title": "hsl(var(--movie-title))",
+        "star-yellow": "hsl(var(--star-yellow))",
+        tag: {
+          blue: {
+            bg: "hsl(var(--tag-blue-bg))",
+            text: "hsl(var(--tag-blue-text))",
+          },
+          green: {
+            bg: "hsl(var(--tag-green-bg))",
+            text: "hsl(var(--tag-green-text))",
+          },
+          purple: {
+            bg: "hsl(var(--tag-purple-bg))",
+            text: "hsl(var(--tag-purple-text))",
+          },
+        },
+      },
+      backgroundImage: {
+        "rank-now":
+          "linear-gradient(rgba(0,0,0,0.4), rgba(102,102,102,0.4)), linear-gradient(#3C3C3C, #3C3C3C)",
+        "rank-best":
+          "linear-gradient(rgba(255,255,255,0.2), rgba(35,121,219,0.2)), linear-gradient(#C4E0FF, #C4E0FF)",
+        "rank-review":
+          "linear-gradient(rgba(255,255,255,0.2), rgba(157,48,207,0.2)), linear-gradient(#ECC4FF, #ECC4FF)",
+        "rank-tag":
+          "linear-gradient(rgba(255,255,255,0.2), rgba(0,151,133,0.2)), linear-gradient(#BCFFFF, #BCFFFF)",
+        "tag-recomm": "linear-gradient(to right, #FFD5FE, #BCFFFF)",
+      },
     },
   },
-  plugins: [],
 };
