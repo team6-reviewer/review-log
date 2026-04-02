@@ -1,4 +1,6 @@
 const dotenv = require("dotenv");
+const pool = require("./config/db");
+
 dotenv.config();
 
 const express = require("express");
@@ -27,6 +29,26 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/auth", authRoutes);
+
+// DB 연결 테스트
+app.get("/api/test-db", async (req, res) => {
+  try {
+    const [rows] = await pool.execute("SELECT NOW() AS now");
+    res.json({
+      success: true,
+      message: "DB 연결 성공",
+      data: rows,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "DB 연결 실패",
+      error: error.message,
+    });
+  }
+});
+
+
 app.use("/api/book", bookRoutes);
 app.use("/api/movie", movieRoutes);
 
