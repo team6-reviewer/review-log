@@ -13,5 +13,16 @@ router.get('/reviews/:id', verifyToken, reviewController.getReviewById);
 router.get('/auth/me/reviews', verifyToken, reviewController.getMyReviews);
 
 
+
+// 리뷰 생성
+router.post('/reviews', verifyToken, reviewController.postReview);
+
+// 리뷰 수정
+router.patch('/reviews/:id', verifyToken, reviewController.patchReview);
+
+// 리뷰 삭제
+router.delete('/reviews/:id', verifyToken, reviewController.deleteReview);
+
+
 module.exports = router;
 
