@@ -41,7 +41,7 @@ export default {
         "rank-review":
           "linear-gradient(rgba(255,255,255,0.2), rgba(157,48,207,0.2)), linear-gradient(#ECC4FF, #ECC4FF)",
         "rank-tag":
-          "linear-gradient(rgba(255,255,255,0.2), rgba(0,151,133,0.2)), linear-gradient(#BCFFFF, #BCFFFF)",
+          "linear-gradient(rgba(255,255,255,0.2), rgba(0,151,133,0.2)), linear-gradient(#009785, #009785)",
         "tag-recomm": "linear-gradient(to right, #FFD5FE, #BCFFFF)",
       },
     },
