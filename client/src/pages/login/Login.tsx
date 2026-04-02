@@ -74,7 +74,7 @@ export default function Login() {
           {/* 하단 링크 */}
           <Link
             to='/join'
-            className='text-sm text-dark-gray underline underline-offset-4 hover:text-main-gray'
+            className='text-sm text-main-gray underline underline-offset-4 hover:text-black'
           >
             회원가입
           </Link>
