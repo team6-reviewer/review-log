@@ -12,13 +12,11 @@ function App() {
       <Routes>
         <Route path='/' element={<Login />} />
         <Route path='/join' element={<Join />} />
-      </Routes>
-      <Routes>
         <Route path='/home' element={<Home />} />
         <Route path='/mypage' element={<Mypage />} />
         <Route path='/withdraw' element={<Withdraw />} />
+        <Route path='*' element={<Error />} />
       </Routes>
-      <Route path='*' element={<Error />} />
     </>
   );
 }
