@@ -1,4 +1,4 @@
-CREATE DATABASE review_log_db;
+CREATE DATABASE IF NOT review_log_db;
 USE review_log_db;
 
 CREATE TABLE `user_Table` (
