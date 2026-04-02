@@ -7,6 +7,7 @@ dotenv.config();
 
 const bookRoutes = require("./routes/bookRoutes"); // 알라딘 api로부터 조회, 검색
 const movieRoutes = require("./routes/movieRoutes"); // TMDB api로부터 조회, 검색
+const reviewRoutes = require("./routes/reviewRoutes"); // 리뷰 관련 라우터 추가
 
 const app = express();
 
@@ -43,6 +44,7 @@ app.get("/api/test-db", async (req, res) => {
 
 app.use("/api/book", bookRoutes);
 app.use("/api/movie", movieRoutes);
+app.use("/api", reviewRoutes); // 리뷰 라우터 연결 추가
 
 const PORT = process.env.PORT || 9000;
 app.listen(PORT, () => {
