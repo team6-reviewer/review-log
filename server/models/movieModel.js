@@ -28,6 +28,7 @@ exports.getTopMovies = async () => {
     // 가져온 결과 중 상위 5개 작품 추출 및 필요한 데이터(제목,포스터경로) 만 정제하여 반환
     const top5Movies = data.results.slice(0, 5);
     return top5Movies.map(movie => ({
+      id: movie.id, // TMDB 관리 영화 ID
       title: movie.title, // 제목
       posterPath: movie.poster_path ? `${posterUrl}${movie.poster_path}` : null
     }));
@@ -61,6 +62,7 @@ exports.searchMovieByTitle = async (title) => {
 
     // 마찬가지로 제목, 포스터 경로만 추출하여 반환
     return data.results.map(movie => ({
+      id: movie.id, // TMDB 관리 영화 ID
       title: movie.title,
       posterPath: movie.poster_path ? `${posterUrl}${movie.poster_path}` : null
     }));
