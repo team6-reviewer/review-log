@@ -93,7 +93,7 @@ export default function Withdraw() {
               type='button'
               variant='outline'
               onClick={() => navigate("/mypage")} // 탈퇴하기는 마이페이지에서만 이동 가능하므로, 뒤로가기 시 마이페이지로 이동
-              className='h-12 flex-1 border-main-gray text-main-gray hover:bg-light-gray rounded-lg text-[16px]'
+              className='h-12 flex-1 bg-white border-main-gray text-main-gray hover:bg-light-gray rounded-lg text-[16px]'
             >
               뒤로가기
             </Button>
