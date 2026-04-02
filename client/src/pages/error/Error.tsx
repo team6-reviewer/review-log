@@ -23,7 +23,7 @@ export default function Error() {
         <Button
           onClick={() => navigate(-1)} // 이전 페이지로 이동
           variant='outline'
-          className='h-10 px-8 border-dark-gray text-main-gray hover:bg-light-gray rounded-lg text-[14px]'
+          className='h-10 bg-white border-dark-gray text-main-gray hover:bg-light-gray text-[14px]'
         >
           뒤로가기
         </Button>

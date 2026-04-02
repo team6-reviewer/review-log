@@ -121,10 +121,10 @@ export default function Join() {
 
   return (
     <div className='flex min-h-screen flex-col items-center justify-center bg-background px-4 py-10'>
-      <div className='flex w-full max-w-[400px] flex-col items-center gap-12'>
+      <div className='flex w-full max-w-[400px] flex-col items-center gap-8'>
         <h1 className='text-[2.5rem] font-bold text-main-gray'>회원가입</h1>
 
-        <form onSubmit={handleJoin} className='flex w-full flex-col gap-6'>
+        <form onSubmit={handleJoin} className='flex w-full flex-col gap-4'>
           {/* 아이디 입력 */}
           <div className='flex flex-col gap-2'>
             <label className='text-sm font-medium text-main-gray ml-1'>
@@ -137,7 +137,6 @@ export default function Join() {
               onChange={handleChange}
               onBlur={handleBlur}
               autoComplete='username'
-              className='h-12 border-main-gray bg-white px-4 rounded-lg focus-visible:ring-1 focus-visible:ring-main-gray text-[16px]'
             />
             {errors.username && (
               <p className='text-[12px] text-destructive ml-1'>
@@ -159,7 +158,6 @@ export default function Join() {
               onChange={handleChange}
               onBlur={handleBlur}
               autoComplete='new-password'
-              className='h-12 border-main-gray bg-white px-4 rounded-lg focus-visible:ring-1 focus-visible:ring-main-gray text-[16px]'
             />
             {errors.password && (
               <p className='text-[12px] text-destructive ml-1'>
@@ -181,7 +179,6 @@ export default function Join() {
               onChange={handleChange}
               onBlur={handleBlur}
               autoComplete='new-password'
-              className='h-12 border-main-gray bg-white px-4 rounded-lg focus-visible:ring-1 focus-visible:ring-main-gray text-[16px]'
             />
             {errors.passwordCheck && (
               <p className='text-[12px] text-destructive ml-1'>
@@ -201,7 +198,6 @@ export default function Join() {
               value={formData.nickname}
               onChange={handleChange}
               onBlur={handleBlur}
-              className='h-12 border-main-gray bg-white px-4 rounded-lg focus-visible:ring-1 focus-visible:ring-main-gray text-[16px]'
             />
             {errors.nickname && (
               <p className='text-[12px] text-destructive ml-1'>
@@ -210,18 +206,15 @@ export default function Join() {
             )}
           </div>
 
-          <div className='flex justify-center gap-4'>
+          <div className='flex justify-center gap-4 mt-4'>
             <Button
               type='button'
               onClick={() => navigate("/")}
-              className='h-12 flex-1 border-main-gray bg-white text-main-gray hover:bg-light-gray rounded-lg text-[16px] mt-4'
+              className='flex-1 border-main-gray bg-white text-main-gray hover:bg-light-gray'
             >
               뒤로가기
             </Button>
-            <Button
-              type='submit'
-              className='h-12 flex-1 bg-main-gray text-white hover:bg-black rounded-lg text-[16px] mt-4'
-            >
+            <Button type='submit' className='flex-1'>
               시작하기
             </Button>
           </div>
