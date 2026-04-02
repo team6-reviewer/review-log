@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const movieController = require('../controllers/movieController');
 
-// GET /api/movies/ranking
+// GET /api/movie/ranking
 router.get('/ranking', movieController.getTopMovies);
 
 // GET /api/movie/search?q={title}

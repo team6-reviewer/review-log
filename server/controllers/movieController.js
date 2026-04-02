@@ -7,11 +7,11 @@ exports.getTopMovies = async (req, res) => {
     const results = await movieModel.getTopMovies();
     
     // 성공
-    res.status(201).json(results);
+    res.status(200).json(results);
   } catch (err) {
 
     // 실패
-    res.status(500).json({error: "영화 상영작 순위 조회 실패" });
+    res.status(500).json({error: "영화 상영작 순위 조회 실패(API 에러)" });
   }
 };
 
@@ -28,10 +28,10 @@ exports.searchMovie = async (req, res) => {
     const results = await movieModel.searchMovieByTitle(title);
     
     // 성공
-    res.status(201).json(results);
+    res.status(200).json(results);
   } catch (error) {
 
     // 실패
-    res.status(500).json({error: "영화 검색 실패" });
+    res.status(500).json({error: "영화 검색 실패(API 에러)" });
   }
 };
