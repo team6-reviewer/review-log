@@ -1,7 +1,7 @@
 const reviewModel = require("../models/reviewModel");
 
 // 1. 상세조회
-exports.getReviewById = async (req, res) => {   
+exports.getReviewById = async (req, res) => {
     try {
         const id = Number(req.params.id);
 
@@ -46,8 +46,11 @@ exports.getReviewList = async (req, res) => {
 // 3. 내 리뷰 목록 조회
 exports.getMyReviews = async (req, res) => {
     try {
-        //  TODO: 인증 미들웨어에서 req.user 주입 필요
-        const userId = req.user.id; 
+        if (!req.user || !req.user.id) {
+            return res.status(401).json({ error: "인증이 필요합니다." });
+        }
+
+        const userId = req.user.id;
         const { type, sort } = req.query;
         const tagnames = req.query.tagnames
             ? Array.isArray(req.query.tagnames)
