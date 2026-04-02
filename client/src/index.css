@@ -9,30 +9,30 @@
 
 @layer base {
   :root {
-    --background: 0 0% 98%; /* #FCFCFA */
-    --foreground: 0 0% 0%; /* #000 */
+    --background: #fcfcfa;
+    --foreground: #000;
 
-    --card: 0 0% 100%; /* #FFF */
-    --card-foreground: 0 0% 24%; /* #3C3C3C */
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 24%;
+    --card: #fff;
+    --card-foreground: #3c3c3c;
+    --popover: #fff;
+    --popover-foreground: #3c3c3c;
 
-    --main-gray: 0 0% 24%; /* #3C3C3C */
-    --dark-gray: 0 0% 57%; /* #929292 */
-    --light-gray: 0 0% 85%; /* #D9D9D9 */
-    --black: 0 0% 0%; /* #000 */
-    --destructive: 0 100% 41%; /* #D00000 */
+    --main-gray: #3c3c3c;
+    --dark-gray: #929292;
+    --light-gray: #d9d9d9;
+    --black: #000;
+    --destructive: #d00000;
 
-    --movie-title: 242 100% 42%; /* #0700D8 */
+    --movie-title: #0700d8;
 
-    --tag-blue-bg: 211 100% 88%; /* #C4E0FF */
-    --tag-blue-text: 211 73% 50%; /* #2379DB */
-    --tag-green-bg: 175 35% 82%; /* #BFE3DF */
-    --tag-green-text: 174 100% 30%; /* #009785 */
-    --tag-purple-bg: 281 100% 88%; /* #ECC4FF */
-    --tag-purple-text: 281 62% 50%; /* #9D30CF */
+    --tag-blue-bg: #c4e0ff;
+    --tag-blue-text: #2379db;
+    --tag-green-bg: #bfe3df;
+    --tag-green-text: #009785;
+    --tag-purple-bg: #ecc4ff;
+    --tag-purple-text: #9d30cf;
 
-    --star-yellow: 51 100% 50%; /* #FFD900 */
+    --star-yellow: #ffd900;
     --modal-overlay: 0 0% 0% / 0.4; /* #000 40% */
 
     --radius: 0.5rem; /* 8px */
