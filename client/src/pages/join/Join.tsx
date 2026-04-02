@@ -214,13 +214,13 @@ export default function Join() {
             <Button
               type='button'
               onClick={() => navigate("/")}
-              className='h-12 w-[48%] border-main-gray bg-white text-main-gray hover:bg-light-gray rounded-lg text-[16px] mt-4'
+              className='h-12 flex-1 border-main-gray bg-white text-main-gray hover:bg-light-gray rounded-lg text-[16px] mt-4'
             >
               뒤로가기
             </Button>
             <Button
               type='submit'
-              className='h-12 w-[48%] bg-main-gray text-white hover:bg-black rounded-lg text-[16px] mt-4'
+              className='h-12 flex-1 bg-main-gray text-white hover:bg-black rounded-lg text-[16px] mt-4'
             >
               시작하기
             </Button>
