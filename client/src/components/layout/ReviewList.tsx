@@ -91,21 +91,27 @@ export default function ReviewList({
         style={{ gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))" }}
       >
         {reviews.map((review: any) => {
-          // 문자열을 배열로 쪼개기
           const tagNames = review.tags ? review.tags.split(", ") : [];
+          const typeTag = {
+            name: review.type === "movie" ? "영화" : "도서",
+            type: "type" as const,
+          };
 
-          // 쪼갠 이름들을 객체 형태로 변환
-          const refinedTags = tagNames.map((name: string) => ({
-            name,
-            type: getTagType(name),
-          }));
+          // 기존 태그들 앞에 typeTag를 끼워넣음
+          const refinedTags = [
+            typeTag,
+            ...tagNames.map((name: string) => ({
+              name,
+              type: getTagType(name),
+            })),
+          ];
 
           return (
             <ReviewCard
               key={review.id}
               title={review.title}
               posterUrl={review.content_image}
-              date={review.write_date.split("T")[0]} // 날짜만 추출
+              date={review.write_date.split("T")[0]}
               rating={review.score}
               tags={refinedTags}
             />
