@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react"; // 🚀 useEffect 추가
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import mainIcon from "@/assets/mainIcon.png";
@@ -7,10 +7,12 @@ import { useNavigate } from "react-router-dom";
 
 export default function Header({
   activeTab,
+  keyword,
   onTabChange,
   onSearch,
 }: {
   activeTab: string;
+  keyword: string;
   onTabChange: (tab: string) => void;
   onSearch: (keyword: string) => void;
 }) {
@@ -18,23 +20,26 @@ export default function Header({
   const [searchKeyword, setSearchKeyword] = useState("");
   const navigate = useNavigate();
 
+  // 외부에서 keyword가 비워지면 내부 인풋도 비워줌
+  useEffect(() => {
+    setSearchKeyword(keyword);
+  }, [keyword]);
+
   return (
     <header className='w-full bg-white shadow-md'>
       <div className='max-w-[1440px] mx-auto p-8 h-[120px] flex items-center justify-between gap-2'>
-        {/* 로고 */}
-        <button
-          className='flex items-center gap-3 shrink-0'
+        <div
+          className='flex items-center gap-3 shrink-0 cursor-pointer'
           onClick={() => navigate("/home")}
         >
           <img src={mainIcon} alt='Logo' className='w-12 h-12' />
-          <h1 className='text-[40px] font-bold text-[#444] tracking-tight leading-none'>
+          <h1 className='text-[40px] font-bold text-main-gray tracking-tight leading-none'>
             Review—Log
           </h1>
-        </button>
+        </div>
 
-        {/* 중앙 탭 */}
         <nav className='relative flex items-center mb-[-2px]'>
-          <div className='absolute bottom-0 left-[-20px] right-[-20px] h-[1px] bg-[#D1D5DB]' />
+          <div className='absolute bottom-0 left-[-20px] right-[-20px] h-[1px] bg-light-gray' />
 
           <div className='flex gap-16 relative'>
             {["전체", "영화", "도서"].map((tab) => (
@@ -43,19 +48,18 @@ export default function Header({
                 onClick={() => onTabChange(tab)}
                 className={cn(
                   "relative pb-4 text-[36px] font-bold transition-all px-2",
-                  activeTab === tab ? "text-[#000]" : "text-[#D1D5DB]",
+                  activeTab === tab ? "text-black" : "text-light-gray",
                 )}
               >
                 {tab}
                 {activeTab === tab && (
-                  <div className='absolute bottom-0 left-0 right-0 h-[5px] bg-[#000] z-10' />
+                  <div className='absolute bottom-0 left-0 right-0 h-[5px] bg-black z-10' />
                 )}
               </button>
             ))}
           </div>
         </nav>
 
-        {/* 검색 섹션*/}
         <div className='flex flex-col gap-3'>
           <form
             onSubmit={(e) => {
@@ -96,7 +100,7 @@ export default function Header({
                   )}
                 >
                   {searchType === type.id && (
-                    <div className='w-2 h-2 rounded-full bg-[#3B82F6]' />
+                    <div className='w-2 h-2 rounded-full bg-movie-title' />
                   )}
                 </div>
                 <input

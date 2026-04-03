@@ -15,27 +15,34 @@ export default function Home() {
   const [keyword, setKeyword] = useState("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
+  // 모든 필터 및 검색 초기화 함수
+  const handleReset = () => {
+    setPage(1);
+    setSort("write_date_desc");
+    setKeyword("");
+    setSelectedTags([]);
+  };
+
   // 전체 리뷰 목록 조회
   const { data, isLoading, isError } = useQuery({
-    // queryKey에 넣은 값 중 하나라도 바뀌면 재실행
     queryKey: ["reviews", { page, sort, type, keyword, tags: selectedTags }],
     queryFn: () =>
       getReviews({ page, sort, type, keyword, tags: selectedTags }),
-    placeholderData: (previousData) => previousData, // 페이지 넘길 때 깜빡임 방지
+    placeholderData: (previousData) => previousData,
   });
 
   // 순위 조회
   const { data: rankingData } = useQuery({
     queryKey: ["rankings"],
     queryFn: getRankings,
-    refetchOnWindowFocus: false, // 랭킹은 자주 바뀌지 않으므로 창 포커스 시 재조회 방지
+    refetchOnWindowFocus: false,
   });
 
   return (
     <div className='min-h-screen bg-background pb-20'>
-      {/* 헤더 */}
       <Header
         activeTab={type}
+        keyword={keyword}
         onTabChange={(t) => {
           setType(t);
           setPage(1);
@@ -45,15 +52,11 @@ export default function Home() {
           setPage(1);
         }}
       />
-      {/* 메인 컨텐츠 영역 */}
       <div className='max-w-[1400px] mx-auto px-6'>
-        {/* 상단 레이아웃 섹션 */}
         <div className='mt-10 flex flex-row gap-10 items-start'>
-          {/* 왼쪽 사이드바 (마이페이지, 리뷰쓰기, 랭킹) */}
           <Sidebar rankingData={rankingData} />
 
           <div className='flex-[3_3_75%] min-w-0 flex flex-col gap-8 transition-all duration-300'>
-            {/* 태그 필터 영역 */}
             <TagFilter
               selectedTags={selectedTags}
               onTagClick={(tagname) => {
@@ -62,15 +65,13 @@ export default function Home() {
                     ? prev.filter((t) => t !== tagname)
                     : [...prev, tagname],
                 );
-                setPage(1); // 필터 바뀌면 1페이지로 이동
+                setPage(1);
               }}
             />
-            {/* 추천 리뷰 섹션  */}
             <RecommendSection />
           </div>
         </div>
 
-        {/* 하단 전체 리뷰 리스트 */}
         <ReviewList
           reviews={data?.data || []}
           total={data?.total || 0}
@@ -79,6 +80,8 @@ export default function Home() {
           setPage={setPage}
           sort={sort}
           setSort={setSort}
+          keyword={keyword}
+          onReset={handleReset}
         />
       </div>
     </div>
