@@ -90,7 +90,7 @@ exports.postReview = async (req, res) => {
         res.status(201).json(result);
 
     } catch(error) {
-        res.status(500).json({ error: "리뷰작성 실패" });
+        res.status(500).json({ error: "리뷰작성 실패", message: error.message});
     }
 }
 
@@ -120,7 +120,7 @@ exports.putReview = async (req, res) => {
         res.status(200).json(result);
     } catch(error) {
         
-        res.status(500).json({ error: "리뷰수정 실패"});
+        res.status(500).json({ error: "리뷰수정 실패", message: error.message });
     }
 }
 
@@ -140,6 +140,6 @@ exports.deleteReview = async (req, res) => {
         res.status(200).json(result);
     }
     catch(error) {
-        res.status(500).json({ error: "리뷰삭제 실패" });
+        res.status(500).json({ error: "리뷰삭제 실패", message: error.message});
     }
 }

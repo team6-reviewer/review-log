@@ -11,7 +11,7 @@ exports.getTopMovies = async (req, res) => {
   } catch (err) {
 
     // 실패
-    res.status(500).json({error: "영화 상영작 순위 조회 실패(API 에러)" });
+    res.status(500).json({error: "영화 상영작 순위 조회 실패(API 에러)", message: err.message});
   }
 };
 
@@ -32,6 +32,6 @@ exports.searchMovie = async (req, res) => {
   } catch (error) {
 
     // 실패
-    res.status(500).json({error: "영화 검색 실패(API 에러)" });
+    res.status(500).json({error: "영화 검색 실패(API 에러)", message: error.message});
   }
 };
