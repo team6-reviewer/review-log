@@ -62,7 +62,7 @@ export default function CarouselSection({ data }: { data: RankingData }) {
 
   return (
     <div
-      className={`flex-shrink-0 w-full max-w-[360px] aspect-[580/340] relative mx-auto rounded-[24px] shadow-lg transition-colors duration-500 overflow-hidden ${currentBg}`}
+      className={`flex-shrink-0 w-full max-w-[360px] aspect-[580/340] relative mx-auto rounded-[24px] shadow-sm transition-colors duration-500 overflow-hidden ${currentBg}`}
     >
       <Carousel
         setApi={setApi}

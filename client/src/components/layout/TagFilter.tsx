@@ -1,24 +1,42 @@
 import Tag from "@/components/Tag";
+import { GENRE_TAGS, MOOD_TAGS } from "@/constants/tags";
 
-const GENRES = ["판타지", "로맨스", "스릴러", "드라마"];
-const MOODS = ["감동적인", "잔잔한", "몽환적인", "유쾌한"];
+interface TagFilterProps {
+  selectedTags: string[];
+  onTagClick: (tagname: string) => void;
+}
 
-export default function TagFilter() {
+export default function TagFilter({
+  selectedTags,
+  onTagClick,
+}: TagFilterProps) {
   return (
     <div className='bg-white p-6 rounded-[20px] shadow-sm border border-light-gray flex flex-col gap-4'>
       <div className='flex items-center gap-4'>
         <span className='text-dark-gray font-bold shrink-0'>장르</span>
         <div className='flex flex-wrap gap-2'>
-          {GENRES.map((t) => (
-            <Tag key={t} label={t} type='genre' />
+          {GENRE_TAGS.map((tag) => (
+            <Tag
+              key={tag.id}
+              label={tag.tagname}
+              type='genre'
+              isSelected={selectedTags.includes(tag.tagname)}
+              onClick={() => onTagClick(tag.tagname)}
+            />
           ))}
         </div>
       </div>
       <div className='flex items-center gap-4'>
         <span className='text-dark-gray font-bold shrink-0'>분위기</span>
         <div className='flex flex-wrap gap-2'>
-          {MOODS.map((t) => (
-            <Tag key={t} label={t} type='mood' />
+          {MOOD_TAGS.map((tag) => (
+            <Tag
+              key={tag.id}
+              label={tag.tagname}
+              type='mood'
+              isSelected={selectedTags.includes(tag.tagname)}
+              onClick={() => onTagClick(tag.tagname)}
+            />
           ))}
         </div>
       </div>

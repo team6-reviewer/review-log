@@ -3,7 +3,7 @@ import ReviewCard from "@/components/ReviewCard";
 
 export default function RecommendSection() {
   return (
-    <section className='bg-tag-recomm px-8 py-6 rounded-[30px] flex flex-row items-center justify-between gap-8 relative overflow-hidden'>
+    <section className='shadow-sm bg-tag-recomm px-8 py-6 rounded-[30px] flex flex-row items-center justify-between gap-8 relative overflow-hidden'>
       <div className='flex flex-col gap-4 z-10 shrink-0 min-w-fit'>
         <h2 className='text-[clamp(20px,3vw,32px)] font-bold leading-tight whitespace-nowrap text-main-gray'>
           내가 재미있게 본 <br />
