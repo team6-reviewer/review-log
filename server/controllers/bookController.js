@@ -9,7 +9,7 @@ exports.getTopBooks = async (req, res) => {
     res.status(200).json(results);
   } catch (err) {
     // 실패
-    res.status(500).json({ error: "도서 판매량 순위 조회 실패(API 에러)" });
+    res.status(500).json({ error: "도서 판매량 순위 조회 실패(API 에러)", message: err.message});
   }
 };
 
@@ -28,6 +28,6 @@ exports.searchBook = async (req, res) => {
     res.status(200).json(results);
   } catch (error) {
     // 실패
-    res.status(500).json({ error: "도서 검색 실패(API 에러)" });
+    res.status(500).json({ error: "도서 검색 실패(API 에러)", message:error.message});
   }
 };
