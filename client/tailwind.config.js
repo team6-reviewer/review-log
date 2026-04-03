@@ -37,13 +37,14 @@ export default {
         "rank-now":
           "linear-gradient(rgba(0,0,0,0.4), rgba(102,102,102,0.4)), linear-gradient(#3C3C3C, #3C3C3C)",
         "rank-best":
-          "linear-gradient(rgba(255,255,255,0.2), rgba(35,121,219,0.2)), linear-gradient(#C4E0FF, #C4E0FF)",
+          "linear-gradient(rgba(255,255,255,0.2), rgba(0,151,133,0.2)), linear-gradient(#009785, #009785)",
         "rank-review":
           "linear-gradient(rgba(255,255,255,0.2), rgba(157,48,207,0.2)), linear-gradient(#ECC4FF, #ECC4FF)",
         "rank-tag":
-          "linear-gradient(rgba(255,255,255,0.2), rgba(0,151,133,0.2)), linear-gradient(#009785, #009785)",
+          "linear-gradient(rgba(255,255,255,0.2), rgba(35,121,219,0.2)), linear-gradient(#C4E0FF, #C4E0FF)",
         "tag-recomm": "linear-gradient(to right, #FFD5FE, #BCFFFF)",
       },
     },
   },
+  plugins: [require("tailwind-scrollbar-hide")],
 };
