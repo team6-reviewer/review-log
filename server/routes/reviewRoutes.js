@@ -18,11 +18,10 @@ router.get('/auth/me/reviews', verifyToken, reviewController.getMyReviews);
 router.post('/reviews', verifyToken, reviewController.postReview);
 
 // 리뷰 수정
-router.patch('/reviews/:id', verifyToken, reviewController.patchReview);
+router.put('/reviews/:id', verifyToken, reviewController.putReview);
 
 // 리뷰 삭제
 router.delete('/reviews/:id', verifyToken, reviewController.deleteReview);
 
 
 module.exports = router;
-
