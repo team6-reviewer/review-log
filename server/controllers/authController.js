@@ -77,7 +77,7 @@ module.exports = {
         hashedPassword,
         nickname,
       );
-      console.log("[회원가입] 생성된 유저 id:", newId, hashedPassword); //확인용
+      console.log("[회원가입] 생성된 유저 id:", newId); //확인용
 
       res.status(201).json({ message: "회원가입이 완료되었습니다." });
     } catch (error) {
