@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import CarouselSection from "@/components/carousel/CarouselSection";
 import { useNavigate } from "react-router-dom";
 
-export default function Sidebar() {
+export default function Sidebar({ rankingData }: { rankingData: any }) {
   const navigate = useNavigate();
   return (
     <aside className='flex-[1_1_25%] min-w-[270px] max-w-[360px] flex flex-col gap-6 transition-all duration-300'>
@@ -26,14 +26,7 @@ export default function Sidebar() {
         </Button>
       </div>
 
-      <CarouselSection
-        data={{
-          nowPlaying: [],
-          bestSellers: [],
-          mostReviewed: [],
-          popularTags: [],
-        }}
-      />
+      {rankingData && <CarouselSection data={rankingData} />}
     </aside>
   );
 }

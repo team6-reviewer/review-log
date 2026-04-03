@@ -6,6 +6,7 @@ import ReviewList from "@/components/layout/ReviewList";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getReviews } from "@/services/review";
+import { getRankings } from "@/services/ranking";
 
 export default function Home() {
   const [page, setPage] = useState(1);
@@ -14,7 +15,7 @@ export default function Home() {
   const [keyword, setKeyword] = useState("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
-  // 🔥 탄스택 쿼리 핵심 로직
+  // 전체 리뷰 목록 조회
   const { data, isLoading, isError } = useQuery({
     // queryKey에 넣은 값 중 하나라도 바뀌면 재실행
     queryKey: ["reviews", { page, sort, type, keyword, tags: selectedTags }],
@@ -23,7 +24,12 @@ export default function Home() {
     placeholderData: (previousData) => previousData, // 페이지 넘길 때 깜빡임 방지
   });
 
-  console.log(data);
+  // 순위 조회
+  const { data: rankingData } = useQuery({
+    queryKey: ["rankings"],
+    queryFn: getRankings,
+    refetchOnWindowFocus: false, // 랭킹은 자주 바뀌지 않으므로 창 포커스 시 재조회 방지
+  });
 
   return (
     <div className='min-h-screen bg-background pb-20'>
@@ -44,7 +50,7 @@ export default function Home() {
         {/* 상단 레이아웃 섹션 */}
         <div className='mt-10 flex flex-row gap-10 items-start'>
           {/* 왼쪽 사이드바 (마이페이지, 리뷰쓰기, 랭킹) */}
-          <Sidebar />
+          <Sidebar rankingData={rankingData} />
 
           <div className='flex-[3_3_75%] min-w-0 flex flex-col gap-8 transition-all duration-300'>
             {/* 태그 필터 영역 */}
