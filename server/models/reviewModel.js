@@ -16,14 +16,14 @@ exports.reviewById = async (review_id) => {
                 LEFT JOIN reviewTag_Table rt on r.id = rt.review_id
                 LEFT JOIN tag_Table t ON rt.tag_id = t.id 
                 WHERE r.id = ?    
-                GROUP BY r.id, r.title, r.content_image, r.score, r.write_date, r.watch_date, r.content                          
+                GROUP BY r.id, r.title, r.content_image, r.type, r.score, r.write_date, r.watch_date, r.content                          
                 `;
   const [rows] = await pool.query(sql, [review_id]);
   return rows[0];
 };
 
 // 2. 목록 전체 조회
-exports.reviewList = async (type, keyword, sort, tagnames, page, size) => {
+exports.reviewList = async (type, keyword, searchType, sort, tagnames, page, size) => {
   let sql = `SELECT 
                     r.id,
                     r.title,
@@ -56,11 +56,23 @@ exports.reviewList = async (type, keyword, sort, tagnames, page, size) => {
 
   // 검색 조회
   if (keyword) {
-    sql += ` AND (r.title LIKE ? OR r.content LIKE ?)`;
-    countSql += ` AND (r.title LIKE ? OR r.content LIKE ?)`;
-    params.push(`%${keyword}%`, `%${keyword}%`);
-    countParams.push(`%${keyword}%`, `%${keyword}%`);
-  }
+        if (searchType === "title") {
+            sql += ` AND r.title LIKE ?`;
+            countSql += ` AND r.title LIKE ?`;
+            params.push(`%${keyword}%`);
+            countParams.push(`%${keyword}%`);
+        } else if (searchType === "content") {
+            sql += ` AND r.content LIKE ?`;
+            countSql += ` AND r.content LIKE ?`;
+            params.push(`%${keyword}%`);
+            countParams.push(`%${keyword}%`);
+        } else {
+            sql += ` AND (r.title LIKE ? OR r.content LIKE ?)`;
+            countSql += ` AND (r.title LIKE ? OR r.content LIKE ?)`;
+            params.push(`%${keyword}%`, `%${keyword}%`);
+            countParams.push(`%${keyword}%`, `%${keyword}%`);
+        }
+    }
 
   // 태그 필터
   if (tagnames && tagnames.length > 0) {
@@ -85,7 +97,7 @@ exports.reviewList = async (type, keyword, sort, tagnames, page, size) => {
     countParams.push(...tagnames);
   }
 
-  sql += ` GROUP BY r.id, r.title, r.content_image, r.score, r.write_date, r.watch_date`;
+  sql += ` GROUP BY r.id, r.title, r.type, r.content_image, r.score, r.write_date, r.watch_date`;
 
   // 정렬 (별점순, 관람일자순, 작성일자순)
   if (sort === "score_desc") {
@@ -171,7 +183,7 @@ exports.myReviews = async (userId, type, sort, tagnames, page, size) => {
         countParams.push(...tagnames);
     }
 
-    sql += ` GROUP BY r.id, r.title, r.content_image, r.score, r.write_date, r.watch_date`;
+    sql += ` GROUP BY r.id, r.title, r.type, r.content_image, r.score, r.write_date, r.watch_date`;
 
     // 정렬 (별점순, 관람일자순, 작성일자순)
     if (sort === 'score_desc') {

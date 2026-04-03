@@ -26,7 +26,7 @@ exports.getReviewById = async (req, res) => {
 // 2. 목록 전체 조회
 exports.getReviewList = async (req, res) => {
     try {
-        const { type, keyword, sort } = req.query;
+        const { type, keyword, searchType, sort } = req.query;
         const tagnames = req.query.tagnames
             ? Array.isArray(req.query.tagnames)
                 ? req.query.tagnames
@@ -34,7 +34,7 @@ exports.getReviewList = async (req, res) => {
             : [];
         const page = Math.max(1, Number(req.query.page) || 1);
         const size = Math.max(1, Number(req.query.size) || 5);
-        const result = await reviewModel.reviewList(type, keyword, sort, tagnames, page, size);
+        const result = await reviewModel.reviewList(type, keyword, searchType, sort, tagnames, page, size);
         res.json(result);
 
     } catch (err) {
@@ -46,7 +46,7 @@ exports.getReviewList = async (req, res) => {
 // 3. 내 리뷰 목록 조회
 exports.getMyReviews = async (req, res) => {
     try {
-        if (!req.user || !req.user.id) {
+        if (!req.user || req.user.id == null) {
             return res.status(401).json({ error: "인증이 필요합니다." });
         }
 
