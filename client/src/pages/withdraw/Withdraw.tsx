@@ -35,8 +35,8 @@ export default function Withdraw() {
 
         alert("회원 탈퇴가 완료되었습니다. 그동안 이용해 주셔서 감사합니다.");
 
-        // 3. 로그인 페이지(인덱스)로 이동 및 페이지 새로고침 (상태 초기화)
-        window.location.href = "/";
+        // 3. 로그인 페이지로 이동 및 페이지 새로고침 (상태 초기화)
+        window.location.href = "/"; // 추후 /login으로 변경
       }
     } catch (error: any) {
       const status = error.response?.status;
@@ -83,7 +83,6 @@ export default function Withdraw() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               autoComplete='current-password'
-              className='h-12 border-main-gray bg-white text-center rounded-lg focus-visible:ring-1 focus-visible:ring-main-gray text-[16px]'
             />
           </div>
 
@@ -93,14 +92,14 @@ export default function Withdraw() {
               type='button'
               variant='outline'
               onClick={() => navigate("/mypage")} // 탈퇴하기는 마이페이지에서만 이동 가능하므로, 뒤로가기 시 마이페이지로 이동
-              className='h-12 flex-1 bg-white border-main-gray text-main-gray hover:bg-light-gray rounded-lg text-[16px]'
+              className='flex-1 bg-white border-main-gray text-main-gray hover:bg-light-gray'
             >
               뒤로가기
             </Button>
             <Button
               type='submit'
               disabled={isLoading}
-              className='h-12 flex-1 bg-destructive text-white hover:bg-red-700 rounded-lg text-[16px] font-bold'
+              className='flex-1 bg-destructive hover:bg-red-700'
             >
               {isLoading ? "처리 중..." : "탈퇴하기"}
             </Button>

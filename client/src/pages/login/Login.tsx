@@ -54,7 +54,7 @@ export default function Login() {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             autoComplete='username'
-            className='h-12 border-main-gray bg-white text-center rounded-lg focus-visible:ring-1 focus-visible:ring-main-gray text-[16px] px-4'
+            className='text-center'
           />
           <Input
             type='password'
@@ -62,15 +62,10 @@ export default function Login() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             autoComplete='current-password'
-            className='h-12 border-main-gray bg-white text-center rounded-lg focus-visible:ring-1 focus-visible:ring-main-gray text-[16px] px-4'
+            className='text-center'
           />
 
-          <Button
-            type='submit'
-            className='h-12 w-full bg-main-gray text-white hover:bg-black rounded-lg text-[16px]'
-          >
-            시작하기
-          </Button>
+          <Button type='submit'>시작하기</Button>
           {/* 하단 링크 */}
           <Link
             to='/join'
