@@ -5,6 +5,7 @@ interface GetReviewsParams {
   sort: string;
   type: string;
   keyword?: string;
+  searchType: string;
   tags: string[];
 }
 
@@ -13,6 +14,7 @@ export const getReviews = async ({
   sort,
   type,
   keyword,
+  searchType,
   tags,
 }: GetReviewsParams) => {
   // paramsSerializer를 호출 시점에 바로 적용
@@ -21,6 +23,7 @@ export const getReviews = async ({
       page,
       size: 10,
       sort,
+      searchType,
       // "전체" 탭일 때는 파라미터 제외
       ...(type !== "전체" && { type: type === "영화" ? "movie" : "book" }),
       ...(keyword && { keyword }),

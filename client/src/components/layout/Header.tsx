@@ -1,9 +1,8 @@
-import { useState, useEffect } from "react"; // 🚀 useEffect 추가
+import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import mainIcon from "@/assets/mainIcon.png";
 import { cn } from "@/lib/utils";
-import { useNavigate } from "react-router-dom";
 
 export default function Header({
   activeTab,
@@ -14,24 +13,21 @@ export default function Header({
   activeTab: string;
   keyword: string;
   onTabChange: (tab: string) => void;
-  onSearch: (keyword: string) => void;
+  onSearch: (keyword: string, searchType: string) => void;
 }) {
   const [searchType, setSearchType] = useState("total");
   const [searchKeyword, setSearchKeyword] = useState("");
-  const navigate = useNavigate();
 
   // 외부에서 keyword가 비워지면 내부 인풋도 비워줌
   useEffect(() => {
     setSearchKeyword(keyword);
+    if (keyword === "") setSearchType("total");
   }, [keyword]);
 
   return (
     <header className='w-full bg-white shadow-md'>
       <div className='max-w-[1440px] mx-auto p-8 h-[120px] flex items-center justify-between gap-2'>
-        <div
-          className='flex items-center gap-3 shrink-0 cursor-pointer'
-          onClick={() => navigate("/home")}
-        >
+        <div className='flex items-center gap-3 shrink-0 cursor-pointer'>
           <img src={mainIcon} alt='Logo' className='w-12 h-12' />
           <h1 className='text-[40px] font-bold text-main-gray tracking-tight leading-none'>
             Review—Log
@@ -47,7 +43,7 @@ export default function Header({
                 key={tab}
                 onClick={() => onTabChange(tab)}
                 className={cn(
-                  "relative pb-4 text-[36px] font-bold transition-all px-2",
+                  "relative pb-4 text-[28px] font-bold transition-all px-2 text-nowrap",
                   activeTab === tab ? "text-black" : "text-light-gray",
                 )}
               >
@@ -64,7 +60,7 @@ export default function Header({
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              onSearch(searchKeyword);
+              onSearch(searchKeyword, searchType);
             }}
             className='flex items-center gap-2'
           >
@@ -95,8 +91,8 @@ export default function Header({
                   className={cn(
                     "w-4 h-4 rounded-full border flex items-center justify-center transition-all",
                     searchType === type.id
-                      ? "border-[#444] bg-white"
-                      : "border-[#D1D5DB] bg-white",
+                      ? "border-main-gray bg-white"
+                      : "border-light-gray bg-white",
                   )}
                 >
                   {searchType === type.id && (
@@ -112,7 +108,9 @@ export default function Header({
                 <span
                   className={cn(
                     "text-[14px] font-medium",
-                    searchType === type.id ? "text-[#333]" : "text-[#666]",
+                    searchType === type.id
+                      ? "text-main-gray"
+                      : "text-dark-gray",
                   )}
                 >
                   {type.label}

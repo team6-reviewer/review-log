@@ -14,20 +14,25 @@ export default function Home() {
   const [type, setType] = useState("전체");
   const [keyword, setKeyword] = useState("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [searchType, setSearchType] = useState("total");
 
   // 모든 필터 및 검색 초기화 함수
   const handleReset = () => {
     setPage(1);
     setSort("write_date_desc");
     setKeyword("");
+    setSearchType("total");
     setSelectedTags([]);
   };
 
   // 전체 리뷰 목록 조회
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["reviews", { page, sort, type, keyword, tags: selectedTags }],
+    queryKey: [
+      "reviews",
+      { page, sort, type, keyword, searchType, tags: selectedTags },
+    ],
     queryFn: () =>
-      getReviews({ page, sort, type, keyword, tags: selectedTags }),
+      getReviews({ page, sort, type, keyword, searchType, tags: selectedTags }),
     placeholderData: (previousData) => previousData,
   });
 
@@ -47,8 +52,9 @@ export default function Home() {
           setType(t);
           setPage(1);
         }}
-        onSearch={(k) => {
+        onSearch={(k, st) => {
           setKeyword(k);
+          setSearchType(st);
           setPage(1);
         }}
       />
