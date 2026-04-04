@@ -9,6 +9,14 @@ interface GetReviewsParams {
   tags: string[];
 }
 
+interface GetMyReviewsParams {
+  page: number;
+  sort: string;
+  type: string;
+  tags: string[];
+}
+
+// 리뷰 목록 조회
 export const getReviews = async ({
   page,
   sort,
@@ -35,5 +43,25 @@ export const getReviews = async ({
     },
   });
 
+  return data;
+};
+
+// 내 리뷰 목록 조회
+export const getMyReviews = async ({
+  page,
+  sort,
+  type,
+  tags,
+}: GetMyReviewsParams) => {
+  const { data } = await API.get("/auth/me/reviews", {
+    params: {
+      page,
+      size: 10,
+      sort,
+      tagnames: tags,
+      ...(type !== "전체" && { type: type === "영화" ? "movie" : "book" }),
+    },
+    paramsSerializer: { indexes: null },
+  });
   return data;
 };
