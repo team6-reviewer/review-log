@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import API from "@/services/api";
-import { User } from "lucide-react";
+import { ChevronLeft, User } from "lucide-react";
 
 interface HeaderProps {
   activeTab: string;
@@ -73,6 +73,18 @@ export default function Header({
     <header className='w-full bg-white shadow-md'>
       <div className='max-w-[1440px] mx-auto p-8 h-[120px] flex items-center justify-between gap-2'>
         <div className='flex items-center gap-3'>
+          {isMyPage && !isEditing && (
+            <button
+              onClick={() => navigate("/home")}
+              className='p-1 group'
+              title='홈으로 이동'
+            >
+              <ChevronLeft
+                size={28}
+                className='text-main-gray group-hover:text-black transition-colors'
+              />
+            </button>
+          )}
           <img src={mainIcon} alt='Logo' className='w-12 h-12' />
           {isMyPage ? (
             <>
