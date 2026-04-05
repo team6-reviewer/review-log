@@ -61,9 +61,9 @@ export default function CarouselSection({ data }: { data: RankingData }) {
   const currentBg = slides[current].bg;
 
   return (
-    <div className='w-full h-full max-w-[360px] aspect-[4/5.2] relative mx-auto rounded-[24px] shadow-sm overflow-hidden'>
+    <div className='w-full h-full max-w-[360px] aspect-[4/5.2] relative mx-auto rounded-lg shadow-sm overflow-hidden'>
       <div
-        className={`w-full h-full overflow-y-auto scrollbar-hide transition-colors duration-500 ${currentBg}`}
+        className={`pt-2 w-full h-full overflow-y-auto scrollbar-hide transition-colors duration-500 ${currentBg}`}
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
         <Carousel

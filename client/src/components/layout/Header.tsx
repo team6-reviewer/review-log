@@ -178,7 +178,6 @@ export default function Header({
             </>
           ) : (
             <>
-              {" "}
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
