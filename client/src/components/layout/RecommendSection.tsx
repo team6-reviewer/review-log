@@ -1,13 +1,25 @@
 import { useRef, useState } from "react";
 import ReviewCard from "@/components/ReviewCard";
 import defaultImg from "@/assets/defaultImg.png";
+import { useQuery } from "@tanstack/react-query";
+import { getRecommendedReviews } from "@/services/review";
 
-export default function RecommendSection() {
-  // 마우스 드래그 스크롤 구현
+export default function RecommendSection({
+  onReviewClick,
+}: {
+  onReviewClick: (id: number) => void;
+}) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isDrag, setIsDrag] = useState(false);
   const [startX, setStartX] = useState(0);
 
+  // 태그 기반 리뷰 추천 목록 조회
+  const { data, isLoading } = useQuery({
+    queryKey: ["reviews", "recommendations"],
+    queryFn: () => getRecommendedReviews(3),
+  });
+
+  // 마우스 드래그 스크롤 구현
   const onDragStart = (e: React.MouseEvent) => {
     e.preventDefault();
     setIsDrag(true);
@@ -42,23 +54,38 @@ export default function RecommendSection() {
         onMouseMove={onDragMove}
         onMouseUp={onDragEnd}
         onMouseLeave={onDragEnd}
-        className={`flex flex-row flex-nowrap gap-4 w-full overflow-x-auto px-1 pb-1 scrollbar-hide ${
+        className={`flex flex-row justify-end flex-nowrap gap-4 w-full overflow-x-auto px-1 pb-1 scrollbar-hide ${
           isDrag ? "cursor-grabbing" : "cursor-grab"
         } active:cursor-grabbing transition-all`}
       >
-        {[1, 2, 3].map((i) => (
-          <div key={i} className='shrink-0 select-none pointer-events-none'>
-            <div className='pointer-events-auto'>
-              <ReviewCard
-                title='작품 제목'
-                posterUrl={defaultImg}
-                date='2026-02-28'
-                rating={4.5}
-                isSimple={true}
-              />
-            </div>
+        {!data || data?.length === 0 || data?.recommendations?.length === 0 ? (
+          <div className='flex flex-col items-center lg:items-start gap-2 z-10 shrink-0 min-w-fit select-none text-dark-gray'>
+            <span className=' text-[clamp(20px,3vw,32px)] font-bold leading-tight whitespace-nowrap'>
+              당신의 리뷰를 기다려요.
+            </span>
+            <span className='text-sm'>
+              리뷰를 작성하시면 태그를 바탕으로 리뷰를 추천해 드릴게요.
+            </span>
           </div>
-        ))}
+        ) : (
+          data?.recommendations?.map((review: any) => (
+            <div
+              key={review.id}
+              className='shrink-0 select-none pointer-events-none'
+            >
+              <div className='pointer-events-auto'>
+                <ReviewCard
+                  title={review.title}
+                  posterUrl={review.content_image || defaultImg}
+                  date={review.write_date.split("T")[0]}
+                  rating={Number(review.score)}
+                  isSimple={true}
+                  onClick={() => onReviewClick(review.id)}
+                />
+              </div>
+            </div>
+          ))
+        )}
       </div>
     </section>
   );
