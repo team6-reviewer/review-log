@@ -19,6 +19,7 @@ export default function WriteStep({
   const [currentMode, setCurrentMode] = useState(mode);
   const loginUserId = useAuthStore((state) => state.userId);
 
+  // 폼데이터 초기화
   const [formData, setFormData] = useState({
     title: "",
     score: 0.0,
@@ -30,6 +31,7 @@ export default function WriteStep({
     tags: [] as string[],
   });
 
+  // 에러 여부 초기화
   const [errors, setErrors] = useState({
     watch_date: false,
     tags: false,
@@ -72,6 +74,7 @@ export default function WriteStep({
     }
   }, [selectedWork, detailData, currentMode]);
 
+  // 작성/수정 Mutation
   const mutation = useMutation({
     mutationFn: (data: any) =>
       currentMode === "edit"
@@ -81,8 +84,23 @@ export default function WriteStep({
       queryClient.invalidateQueries({ queryKey: ["reviews"] });
       onClose();
     },
+    onError: (error: any) => {
+      const serverMessage = error.response?.data?.message;
+
+      if (
+        error.response?.status === 409 ||
+        serverMessage?.includes("리뷰 중복 작성")
+      ) {
+        // 1작품 1리뷰 위반 시
+        alert("이미 리뷰를 작성한 작품입니다.");
+      } else {
+        // 기타 서버 에러
+        alert(serverMessage || "리뷰 저장 중 오류가 발생했습니다.");
+      }
+    },
   });
 
+  // 폼 검증 및 제출 함수
   const validateAndSubmit = () => {
     const newErrors = {
       watch_date: !formData.watch_date,
@@ -105,6 +123,7 @@ export default function WriteStep({
     });
   };
 
+  // 조회 모드 여부
   const isView = currentMode === "view";
 
   // 삭제 Mutation
