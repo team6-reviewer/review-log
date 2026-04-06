@@ -10,14 +10,17 @@ const authMiddleware = require("../middleware/authMiddleware");
 */
 router.use(authMiddleware);
 
+// 내가 쓴 리뷰 조회
+router.get("/reviews/me", reviewController.getMyReviews);
+
+// 가장 리뷰 많은 작품 순위 상위 5개
+router.get("/reviews/rank/most-reviewed", reviewController.getTopReviewed);
+
 // 전체 조회
 router.get("/reviews", reviewController.getReviewList);
 
 // 상세 조회
 router.get("/reviews/:id", reviewController.getReviewById);
-
-// 내가 쓴 리뷰 조회
-router.get("/reviews/me", reviewController.getMyReviews);
 
 // 리뷰 생성
 router.post("/reviews", reviewController.postReview);
@@ -27,8 +30,5 @@ router.put("/reviews/:id", reviewController.putReview);
 
 // 리뷰 삭제
 router.delete("/reviews/:id", reviewController.deleteReview);
-
-// 가장 리뷰 많은 작품 순위 상위 5개
-router.get("/reviews/rank/most-reviewed", reviewController.getTopReviewed);
 
 module.exports = router;

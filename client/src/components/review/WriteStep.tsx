@@ -20,13 +20,15 @@ export default function WriteStep({
   const [currentMode, setCurrentMode] = useState(mode);
   const loginUserId = useAuthStore((state) => state.userId);
 
+  const today = new Date().toISOString().split("T")[0]; // yyyy-MM-dd 형식 오늘 날짜
+
   // 폼데이터 초기화
   const [formData, setFormData] = useState({
     title: "",
     score: 0.0,
     content: "",
-    watch_date: "",
-    write_date: "",
+    watch_date: today,
+    write_date: today,
     type: "movie",
     posterPath: "",
     tags: [] as string[],
@@ -104,7 +106,7 @@ export default function WriteStep({
   // 폼 검증 및 제출 함수
   const validateAndSubmit = () => {
     const newErrors = {
-      watch_date: !formData.watch_date,
+      watch_date: !formData.watch_date || formData.watch_date > today,
       tags: formData.tags.length === 0,
       content: !formData.content.trim(),
     };
@@ -180,6 +182,7 @@ export default function WriteStep({
                     type='date'
                     placeholder='yyyy-MM-dd'
                     value={formData.watch_date}
+                    max={today}
                     onChange={(e) => {
                       setFormData({ ...formData, watch_date: e.target.value });
                       setErrors({ ...errors, watch_date: false });
@@ -196,7 +199,7 @@ export default function WriteStep({
               )}
               {!isView && !!errors.watch_date && (
                 <p className='text-[14px] text-destructive'>
-                  관람일자를 입력해 주세요.
+                  관람일자를 올바르게 입력해 주세요.
                 </p>
               )}
             </div>

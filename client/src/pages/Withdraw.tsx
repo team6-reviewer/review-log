@@ -73,6 +73,13 @@ export default function Withdraw() {
             <p className='text-[14px] text-dark-gray text-center'>
               본인 확인을 위해 비밀번호를 입력해 주세요.
             </p>
+            {/* 브라우저 경고 방지를 위한 숨겨진 input */}
+            <input
+              type='text'
+              name='username'
+              autoComplete='username'
+              style={{ display: "none" }}
+            />
             <Input
               type='password'
               placeholder='현재 비밀번호'
