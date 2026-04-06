@@ -1,5 +1,4 @@
 import { useRef, useState } from "react";
-import Tag from "@/components/Tag";
 import ReviewCard from "@/components/ReviewCard";
 
 export default function RecommendSection() {
@@ -27,11 +26,8 @@ export default function RecommendSection() {
     <section className='shadow-sm bg-tag-recomm px-8 py-6 rounded-lg flex flex-col lg:flex-row items-center justify-between gap-8 relative overflow-hidden'>
       <div className='flex flex-col gap-4 z-10 shrink-0 min-w-fit select-none'>
         <h2 className='text-[clamp(20px,3vw,32px)] font-bold leading-tight whitespace-nowrap text-main-gray'>
-          내가 재미있게 본 <br />
-          <div className='flex items-center gap-2 mt-1'>
-            <Tag label='감동적인' type='mood' isSelected={false} />
-            <span>다른 작품 리뷰</span>
-          </div>
+          <span>당신의 취향을 저격할 </span>
+          <span>추천 리뷰</span>
         </h2>
       </div>
 
@@ -50,8 +46,8 @@ export default function RecommendSection() {
           <div key={i} className='shrink-0 select-none pointer-events-none'>
             <div className='pointer-events-auto'>
               <ReviewCard
-                title='에브리씽...'
-                posterUrl='https://api.reviewlog.com/images/everything.jpg'
+                title='디디의 우산 - 황정은 연작소설'
+                posterUrl='https://image.aladin.co.kr/product/17729/72/cover500/8936437542_1.jpg'
                 date='2026-02-28'
                 rating={4.5}
                 isSimple={true}
