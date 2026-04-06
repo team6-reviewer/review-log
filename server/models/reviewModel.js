@@ -224,6 +224,18 @@ exports.postReview = async (userId, title, score, content, watch_date, type, con
     try {
         await connection.beginTransaction();
 
+        // 우선 유저아이디, 리뷰제목, 타입을 통해 동일한 작품이 있는지 조회(1작품 1리뷰 기능
+        const checkDuplicateSql = 
+            `select id from review_Table 
+            where user_id = ? and title = ? and type = ?`;
+        const [existingReviews] = await connection.query(checkDuplicateSql, [userId, title, type]);
+        
+        // 만약에 존재하면 에러 throw
+        if (existingReviews.length > 0) {
+            throw new Error("ALREADY_REVIEWED");
+        }
+
+        // 이후 리뷰 삽입 로직
         // 우선 리뷰테이블에 리뷰 삽입
         const reviewSql = `
             insert into review_Table (user_id, title, score, content, watch_date, type, content_image) 
