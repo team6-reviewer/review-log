@@ -3,10 +3,12 @@ import TagFilter from "@/components/layout/TagFilter";
 import ReviewList from "@/components/layout/ReviewList";
 import ReviewModal from "@/components/review/ReviewModal";
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getMyReviews } from "@/services/review";
+import API from "@/services/api";
 
 export default function Mypage() {
+  const queryClient = useQueryClient();
   const [page, setPage] = useState(1);
   const [sort, setSort] = useState("write_date_desc");
   const [type, setType] = useState("전체");
@@ -29,6 +31,15 @@ export default function Mypage() {
     queryKey: ["myReviews", { page, sort, type, tags: selectedTags }],
     queryFn: () => getMyReviews({ page, sort, type, tags: selectedTags }),
     placeholderData: (prev) => prev,
+  });
+
+  // 삭제 Mutation (ReviewList에서 사용)
+  const deleteMutation = useMutation({
+    mutationFn: (id: number) => API.delete(`/reviews/${id}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["reviews"] });
+      alert("리뷰가 삭제되었습니다.");
+    },
   });
 
   return (
@@ -70,6 +81,13 @@ export default function Mypage() {
             onReviewClick={(id: number) =>
               setModalConfig({ isOpen: true, mode: "view", reviewId: id })
             }
+            onEditClick={(id: number) =>
+              setModalConfig({ isOpen: true, mode: "edit", reviewId: id })
+            }
+            onDeleteClick={(id: number) => {
+              if (window.confirm("정말 삭제하시겠습니까?"))
+                deleteMutation.mutate(id);
+            }}
           />
         </div>
       </div>

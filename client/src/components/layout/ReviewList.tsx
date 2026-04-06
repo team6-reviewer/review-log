@@ -2,9 +2,8 @@ import { ChevronLeft, ChevronRight, RotateCcw } from "lucide-react";
 import ReviewCard from "@/components/ReviewCard";
 import { GENRE_TAGS } from "@/constants/tags";
 
-// 태그 이름을 넣으면 'genre'인지 'mood'인지 반환
+// 태그 이름으로부터 타입을 유추하는 헬퍼 함수
 const getTagType = (tagName: string): "genre" | "mood" => {
-  // GENRE_TAGS 배열에 해당 이름이 있는지 확인
   const isGenre = GENRE_TAGS.some((tag) => tag.tagname === tagName);
   return isGenre ? "genre" : "mood";
 };
@@ -19,6 +18,9 @@ export default function ReviewList({
   setSort,
   keyword,
   onReset,
+  onReviewClick,
+  onEditClick,
+  onDeleteClick,
 }: any) {
   return (
     <section className='flex flex-col gap-6 mt-12'>
@@ -39,15 +41,12 @@ export default function ReviewList({
               </>
             )}
           </h2>
-
-          {/* 초기화 버튼: 검색어나 필터가 적용된 상태에서만 노출 */}
-          {(keyword || sort !== "rating_desc" || page !== 1) && (
+          {(keyword || sort !== "write_date_desc" || page !== 1) && (
             <button
               onClick={onReset}
               className='flex items-center gap-1 text-[14px] text-gray-400 hover:text-main-gray transition-colors'
             >
-              <RotateCcw size={14} />
-              <span>초기화</span>
+              <RotateCcw size={14} /> <span>초기화</span>
             </button>
           )}
         </div>
@@ -55,51 +54,47 @@ export default function ReviewList({
         <div className='flex items-center gap-4'>
           <div className='flex items-center gap-2 text-dark-gray'>
             <button
-              onClick={() => setPage((prev: number) => Math.max(prev - 1, 1))}
+              onClick={() => setPage((p: number) => Math.max(p - 1, 1))}
               disabled={page === 1}
             >
-              <ChevronLeft className='cursor-pointer enabled:hover:text-main-gray' />
+              <ChevronLeft />
             </button>
             <span className='font-medium'>
               {page} / {Math.ceil(total / 10) || 1}
             </span>
             <button
               onClick={() =>
-                setPage((prev: number) =>
-                  Math.min(prev + 1, Math.ceil(total / 10)),
-                )
+                setPage((p: number) => Math.min(p + 1, Math.ceil(total / 10)))
               }
               disabled={page === Math.ceil(total / 10) || total === 0}
             >
-              <ChevronRight className='cursor-pointer enabled:hover:text-main-gray' />
+              <ChevronRight />
             </button>
           </div>
           <select
-            className='border border-light-gray p-2 rounded-lg text-sm outline-none bg-white cursor-pointer hover:border-main-gray transition-colors'
+            className='border border-light-gray p-2 rounded-lg text-sm outline-none bg-white'
             value={sort}
             onChange={(e) => setSort(e.target.value)}
           >
             <option value='write_date_desc'>작성일자순</option>
-            <option value='rating_desc'>별점순</option>
+            <option value='score_desc'>별점순</option>
             <option value='watch_date_desc'>관람일자순</option>
           </select>
         </div>
       </div>
 
+      {/* 리뷰 카드 목록 */}
       <div
-        className='grid gap-6'
+        className='grid gap-6 items-start'
         style={{ gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))" }}
       >
         {reviews.map((review: any) => {
           const tagNames = review.tags ? review.tags.split(", ") : [];
-          const typeTag = {
-            name: review.type === "movie" ? "영화" : "도서",
-            type: "type" as const,
-          };
-
-          // 기존 태그들 앞에 typeTag를 끼워넣음
           const refinedTags = [
-            typeTag,
+            {
+              name: review.type === "movie" ? "영화" : "도서",
+              type: "type" as const,
+            },
             ...tagNames.map((name: string) => ({
               name,
               type: getTagType(name),
@@ -111,9 +106,19 @@ export default function ReviewList({
               key={review.id}
               title={review.title}
               posterUrl={review.content_image}
-              date={review.write_date.split("T")[0]}
+              date={review.watch_date.split("T")[0]}
               rating={review.score}
               tags={refinedTags}
+              isMine={review.isMine !== undefined ? review.isMine : true}
+              onClick={() => onReviewClick(review.id)} // 상세 조회 모달 오픈
+              onEdit={(e: any) => {
+                e.stopPropagation();
+                onEditClick(review.id);
+              }} // 수정 모달 오픈
+              onDelete={(e: any) => {
+                e.stopPropagation();
+                onDeleteClick(review.id);
+              }} // 삭제 API 호출
             />
           );
         })}

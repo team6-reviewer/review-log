@@ -1,4 +1,5 @@
 import API from "@/services/api";
+import { useAuthStore } from "@/stores/useAuthStore";
 
 interface GetReviewsParams {
   page: number;
@@ -25,9 +26,11 @@ export const getReviews = async ({
   searchType,
   tags,
 }: GetReviewsParams) => {
-  // paramsSerializer를 호출 시점에 바로 적용
+  const userId = useAuthStore.getState().userId;
+
   const { data } = await API.get("/reviews", {
     params: {
+      userId, // 로그인한 사용자 ID도 함께 전달
       page,
       size: 10,
       sort,
