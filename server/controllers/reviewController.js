@@ -92,9 +92,19 @@ exports.postReview = async (req, res) => {
         res.status(201).json(result);
 
     } catch(error) {
+
+        if (error.message === "ALREADY_REVIEWED") {
+            return res.status(409).json({ error: "리뷰작성 실패", message: "이미 해당 작품에 대한 리뷰를 작성함(리뷰 중복 작성)" });
+        }
+
+        if (error.message == "FUTURE_WATCHDATE") {
+            return res.status(400).json({ error: "리뷰작성 실패", message: "관람일자가 미래"});
+        }
+        
         res.status(500).json({ error: "리뷰작성 실패", message: error.message});
     }
 }
+
 
 // 리뷰 수정
 exports.putReview = async (req, res) => {
@@ -145,3 +155,13 @@ exports.deleteReview = async (req, res) => {
         res.status(500).json({ error: "리뷰삭제 실패", message: error.message});
     }
 }
+
+// 가장 리뷰 많은 작품 순위 상위 5개
+exports.getTopReviewed = async (req, res) => {
+    try {
+        const results = await reviewModel.getTopContent();
+        res.status(200).json(results);
+    } catch (error) {
+        res.status(500).json({ error: "리뷰 많은 작품 조회 실패", message: error.message });
+    }
+};

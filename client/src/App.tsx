@@ -1,20 +1,27 @@
-import Error from "@/pages/error/Error";
-import Home from "@/pages/home/Home";
-import Join from "@/pages/join/Join";
-import Login from "@/pages/login/Login";
-import Mypage from "@/pages/mypage/Mypage";
-import Withdraw from "@/pages/withdraw/Withdraw";
+import ProtectedRoute from "@/components/layout/ProtectedRoute";
+import Error from "@/pages/Error";
+import Home from "@/pages/Home";
+import Join from "@/pages/Join";
+import Login from "@/pages/Login";
+import Mypage from "@/pages/Mypage";
+import Withdraw from "@/pages/Withdraw";
 import { Route, Routes } from "react-router-dom";
 
 function App() {
   return (
     <>
       <Routes>
-        <Route path='/' element={<Login />} />
+        {/* 로그인 필요 없는 페이지 */}
+        <Route path='/login' element={<Login />} />
         <Route path='/join' element={<Join />} />
-        <Route path='/home' element={<Home />} />
-        <Route path='/mypage' element={<Mypage />} />
-        <Route path='/withdraw' element={<Withdraw />} />
+
+        {/* 로그인이 필요한 페이지 */}
+        <Route element={<ProtectedRoute />}>
+          <Route path='/' element={<Home />} />
+          <Route path='/mypage' element={<Mypage />} />
+          <Route path='/withdraw' element={<Withdraw />} />
+        </Route>
+
         <Route path='*' element={<Error />} />
       </Routes>
     </>

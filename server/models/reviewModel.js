@@ -239,6 +239,24 @@ exports.postReview = async (userId, title, score, content, watch_date, type, con
     try {
         await connection.beginTransaction();
 
+        // 우선 유저아이디, 리뷰제목, 타입을 통해 동일한 작품이 있는지 조회(1작품 1리뷰 기능
+        const checkDuplicateSql = 
+            `select id from review_Table 
+            where user_id = ? and title = ? and type = ?`;
+        const [existingReviews] = await connection.query(checkDuplicateSql, [userId, title, type]);
+        
+        // 만약에 존재하면 에러 throw
+        if (existingReviews.length > 0) {
+            throw new Error("ALREADY_REVIEWED");
+        }
+
+        // 관람일자가 미래일 경우 방어 로직
+        if(new Date(watch_date)>new Date())
+        {
+            throw new Error("FUTURE_WATCHDATE");
+        }
+
+        // 이후 리뷰 삽입 로직
         // 우선 리뷰테이블에 리뷰 삽입
         const reviewSql = `
             insert into review_Table (user_id, title, score, content, watch_date, type, content_image) 
@@ -399,4 +417,15 @@ exports.deleteReview = async (reviewId, userId) => {
     } finally {
         connection.release();
     }
+};
+
+// 가장 리뷰 많은 작품 순위
+exports.getTopContent = async () => {
+   
+    const sql = `
+        select title, max(content_image) as posterPath, type from review_Table
+        group by title, type 
+        order by count(id) desc limit 5`; // 개수 까지 확인하려면 count(id) 넣기
+    const [rows] = await pool.query(sql);
+    return rows;
 };
