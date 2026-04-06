@@ -30,7 +30,7 @@ export default function Login() {
       // Zustand 스토어 업데이트
       login(userId);
 
-      navigate("/home", { replace: true }); // 추후 /으로 변경
+      navigate("/", { replace: true });
     } catch (error: any) {
       console.error("로그인 에러:", error);
       alert("로그인에 실패했습니다. 아이디와 비밀번호를 확인해 주세요.");

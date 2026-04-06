@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import API from "@/services/api";
 import { ChevronLeft, User } from "lucide-react";
+import { useAuthStore } from "@/stores/useAuthStore";
 
 interface HeaderProps {
   activeTab: string;
@@ -29,6 +30,7 @@ export default function Header({
   const queryClient = useQueryClient();
   const [isEditing, setIsEditing] = useState(false);
   const [editNickname, setEditNickname] = useState("");
+  const logout = useAuthStore((state) => state.logout);
 
   // 외부에서 keyword가 비워지면 내부 인풋도 비워줌
   useEffect(() => {
@@ -58,8 +60,10 @@ export default function Header({
     mutationFn: () => API.post("/auth/logout"),
     onSuccess: () => {
       queryClient.clear();
+      logout();
+
       alert("로그아웃 되었습니다.");
-      navigate("/"); // 추후 /login으로 변경
+      navigate("/", { replace: true });
     },
   });
 
@@ -75,7 +79,7 @@ export default function Header({
         <div className='flex items-center gap-3'>
           {isMyPage && !isEditing && (
             <button
-              onClick={() => navigate("/home")}
+              onClick={() => navigate("/")}
               className='p-1 group'
               title='홈으로 이동'
             >

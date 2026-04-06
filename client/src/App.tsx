@@ -12,12 +12,12 @@ function App() {
     <>
       <Routes>
         {/* 로그인 필요 없는 페이지 */}
-        <Route path='/' element={<Login />} />
+        <Route path='/login' element={<Login />} />
         <Route path='/join' element={<Join />} />
 
         {/* 로그인이 필요한 페이지 */}
         <Route element={<ProtectedRoute />}>
-          <Route path='/home' element={<Home />} />
+          <Route path='/' element={<Home />} />
           <Route path='/mypage' element={<Mypage />} />
           <Route path='/withdraw' element={<Withdraw />} />
         </Route>
