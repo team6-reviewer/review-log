@@ -78,7 +78,7 @@ export default function ReviewCard({
       onClick={onClick}
     >
       {/* isSimple이 아니고 + 내 리뷰일 때만 드롭다운 노출 */}
-      {!isSimple && isMine && (
+      {!isSimple && !!isMine && (
         <div className='flex justify-end' onClick={(e) => e.stopPropagation()}>
           <DropdownMenu>
             <DropdownMenuTrigger className='hover:bg-light-gray transition-colors outline-none border-none rounded-full p-1'>

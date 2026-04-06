@@ -4,11 +4,13 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import API from "@/services/api";
+import { useAuthStore } from "@/stores/useAuthStore";
 
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const login = useAuthStore((state) => state.login);
 
   const handleLogin = async (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -21,6 +23,12 @@ export default function Login() {
 
       const { accessToken } = res.data;
       localStorage.setItem("accessToken", accessToken);
+
+      const userRes = await API.get("/auth/me");
+      const userId = userRes.data.id; // 서버에서 사용자 ID 가져옴
+
+      // Zustand 스토어 업데이트
+      login(userId);
 
       navigate("/home", { replace: true }); // 추후 /으로 변경
     } catch (error: any) {

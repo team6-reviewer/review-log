@@ -149,7 +149,7 @@ export default function WriteStep({
                   <span>{formData.write_date}</span>
                 </div>
               )}
-              {!isView && errors.watch_date && (
+              {!isView && !!errors.watch_date && (
                 <p className='text-[14px] text-destructive'>
                   관람일자를 입력해 주세요.
                 </p>
@@ -275,7 +275,7 @@ export default function WriteStep({
                   ))}
                 </div>
               )}
-              {!isView && errors.tags && (
+              {!isView && !!errors.tags && (
                 <p className='text-[14px] text-destructive'>
                   태그를 한 개 이상 선택해 주세요.
                 </p>
@@ -299,7 +299,7 @@ export default function WriteStep({
           )}
         />
         <div className='flex justify-end'>
-          {isView && detailData?.isMine && (
+          {isView && !!detailData?.isMine && (
             <button className='text-destructive text-sm font-medium underline'>
               리뷰 삭제
             </button>
@@ -310,7 +310,7 @@ export default function WriteStep({
             </span>
           )}
         </div>
-        {!isView && errors.content && (
+        {!isView && !!errors.content && (
           <p className='text-[14px] text-destructive'>
             감상평을 작성해 주세요.
           </p>
@@ -321,7 +321,7 @@ export default function WriteStep({
         <div className='flex justify-between gap-4'>
           {isView ? (
             <>
-              {detailData?.isMine && (
+              {!!detailData?.isMine && (
                 <Button
                   onClick={() => setCurrentMode("edit")}
                   variant='secondary'
