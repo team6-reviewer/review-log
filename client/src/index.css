@@ -1,0 +1,45 @@
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@fontsource-variable/geist";
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: #fcfcfa;
+    --foreground: #000;
+
+    --card: #fff;
+    --card-foreground: #3c3c3c;
+    --popover: #fff;
+    --popover-foreground: #3c3c3c;
+
+    --main-gray: #3c3c3c;
+    --dark-gray: #929292;
+    --light-gray: #d9d9d9;
+    --black: #000;
+    --destructive: #d00000;
+
+    --movie-title: #0700d8;
+
+    --tag-blue-bg: #c4e0ff;
+    --tag-blue-text: #2379db;
+    --tag-green-bg: #bfe3df;
+    --tag-green-text: #009785;
+    --tag-purple-bg: #ecc4ff;
+    --tag-purple-text: #9d30cf;
+
+    --star-yellow: #ffd900;
+    --modal-overlay: 0 0% 0% / 0.4; /* #000 40% */
+
+    --radius: 0.5rem; /* 8px */
+    --font-sans: "Pretendard", ui-sans-serif, system-ui, sans-serif;
+  }
+  body {
+    font-family: var(--font-sans);
+    @apply bg-background text-foreground antialiased;
+  }
+}
