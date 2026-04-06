@@ -14,7 +14,7 @@ exports.topRatedReviewByUser = async (userId) => {
                  LIMIT 1
                  `;
 
-    const [rows] = await pool.execute(sql, [userId]);
+    const [rows] = await pool.query(sql, [userId]);
     return rows[0] || null;
 };
 
@@ -28,7 +28,7 @@ exports.tagsByReviewId = async (reviewId) => {
                 WHERE rt.review_id = ?
                 `;
 
-    const [rows] = await pool.execute(sql, [reviewId]);
+    const [rows] = await pool.query(sql, [reviewId]);
     return rows;
 };
 
@@ -71,6 +71,6 @@ exports.recommendedReviewsByTags = async (reviewId, userId, tagIds, limit = 3) =
                 LIMIT ?`;
 
     const params = [reviewId, userId, ...tagIds, limit];
-    const [rows] = await pool.execute(sql, params);
+    const [rows] = await pool.query(sql, params);
     return rows;
 };
