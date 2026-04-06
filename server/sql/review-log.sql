@@ -24,7 +24,7 @@ CREATE TABLE `review_Table` (
   `user_id` int NOT NULL COMMENT '사용자 식별용 고유번호',
   PRIMARY KEY (`id`),
   CONSTRAINT chk_review_score CHECK (score >= 0.0 AND score <= 5.0),
-  CONSTRAINT fk_review_user FOREIGN KEY (`user_id`) REFERENCES `user_table`(`id`)
+  CONSTRAINT fk_review_user FOREIGN KEY (`user_id`) REFERENCES `user_table`(`id`) ON DELETE CASCADE
 );
 
 CREATE TABLE `tag_Table` (
@@ -57,6 +57,6 @@ CREATE TABLE `reviewTag_Table` (
   PRIMARY KEY (`id`),
   CONSTRAINT uq_review_tag UNIQUE (`review_id`, `tag_id`),
   CONSTRAINT fk_reviewtag_tag FOREIGN KEY (`tag_id`) REFERENCES `tag_Table`(`id`),
-  CONSTRAINT fk_reviewtag_review FOREIGN KEY (`review_id`) REFERENCES `review_Table`(`id`)
+  CONSTRAINT fk_reviewtag_review FOREIGN KEY (`review_id`) REFERENCES `review_Table`(`id`) ON DELETE CASCADE
 );
 
