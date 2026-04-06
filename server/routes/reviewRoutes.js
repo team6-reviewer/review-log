@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const reviewController = require("../controllers/reviewController");
+const recommendationController = require("../controllers/recommendationController");
 const authMiddleware = require("../middleware/authMiddleware");
 
 /* 
@@ -12,6 +13,9 @@ router.use(authMiddleware);
 
 // 내가 쓴 리뷰 조회
 router.get("/reviews/me", reviewController.getMyReviews);
+
+// 추천 리뷰 조회 
+router.get("/reviews/recommendations", recommendationController.getRecommendedReviews);
 
 // 가장 리뷰 많은 작품 순위 상위 5개
 router.get("/reviews/rank/most-reviewed", reviewController.getTopReviewed);
