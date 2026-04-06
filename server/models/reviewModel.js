@@ -325,6 +325,12 @@ exports.putReview = async (reviewId, userId, title, score, content, watch_date, 
     try {
         await connection.beginTransaction();
 
+        // 관람일자가 미래일 경우 방어 로직
+        if(new Date(watch_date)>new Date())
+        {
+            throw new Error("FUTURE_WATCHDATE");
+        }
+
         // 리뷰 내용 수정하는 쿼리
         const updateReviewSql = `update review_Table set title = ?, score = ?, content = ?, watch_date = ?, type = ?, content_image = ? where id = ? and user_id = ?`;
         const [updateResult] = await connection.query(updateReviewSql, [title, score, content, watch_date, type, content_image, reviewId, userId]);
@@ -426,6 +432,18 @@ exports.getTopContent = async () => {
         select title, max(content_image) as posterPath, type from review_Table
         group by title, type 
         order by count(id) desc limit 5`; // 개수 까지 확인하려면 count(id) 넣기
+    const [rows] = await pool.query(sql);
+    return rows;
+};
+
+
+exports.getTopTag = async() => {
+    const sql = `
+        select t.tagname as name, t.type 
+        from reviewTag_Table rt join tag_Table t on rt.tag_id = t.id
+        group by t.id, t.tagname, t.type
+        order by COUNT(rt.id) desc limit 5`;
+        
     const [rows] = await pool.query(sql);
     return rows;
 };
