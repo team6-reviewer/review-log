@@ -4,12 +4,13 @@ const reviewModel = require("../models/reviewModel");
 exports.getReviewById = async (req, res) => {
     try {
         const id = Number(req.params.id);
+        const loginUserId = req.user.id;
 
         if (isNaN(id)) {
             return res.status(400).json({ error: "잘못된 ID입니다." });
         }
 
-        const result = await reviewModel.reviewById(id);
+        const result = await reviewModel.reviewById(loginUserId, id);
 
         if (!result) {
             return res.status(404).json({ error: "리뷰를 찾을 수 없습니다." });
@@ -26,6 +27,7 @@ exports.getReviewById = async (req, res) => {
 // 2. 목록 전체 조회
 exports.getReviewList = async (req, res) => {
     try {
+        const loginUserId = req.user.id;
         const { type, keyword, searchType, sort } = req.query;
         const tagnames = req.query.tagnames
             ? Array.isArray(req.query.tagnames)
@@ -34,7 +36,7 @@ exports.getReviewList = async (req, res) => {
             : [];
         const page = Math.max(1, Number(req.query.page) || 1);
         const size = Math.max(1, Number(req.query.size) || 5);
-        const result = await reviewModel.reviewList(type, keyword, searchType, sort, tagnames, page, size);
+        const result = await reviewModel.reviewList(loginUserId, type, keyword, searchType, sort, tagnames, page, size);
         res.json(result);
 
     } catch (err) {
