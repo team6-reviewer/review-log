@@ -52,7 +52,7 @@ app.get("/api/test-db", async (req, res) => {
 
 app.use("/api/book", bookRoutes);
 app.use("/api/movie", movieRoutes);
-app.use("/api", reviewRoutes); // 리뷰 라우터 연결 추가
+app.use("/api", reviewRoutes); 
 
 const PORT = process.env.PORT || 9000;
 app.listen(PORT, () => {
