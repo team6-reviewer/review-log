@@ -99,7 +99,7 @@ export default function Withdraw() {
             <Button
               type='submit'
               disabled={isLoading}
-              className='flex-1 bg-destructive hover:bg-red-700'
+              className='flex-1 bg-destructive hover:bg-red-700 border-none'
             >
               {isLoading ? "처리 중..." : "탈퇴하기"}
             </Button>

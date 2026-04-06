@@ -1,9 +1,10 @@
 import Header from "@/components/layout/Header";
 import TagFilter from "@/components/layout/TagFilter";
 import ReviewList from "@/components/layout/ReviewList";
+import ReviewModal from "@/components/review/ReviewModal";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { getMyReviews, getReviews } from "@/services/review";
+import { getMyReviews } from "@/services/review";
 
 export default function Mypage() {
   const [page, setPage] = useState(1);
@@ -11,14 +12,19 @@ export default function Mypage() {
   const [type, setType] = useState("전체");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
-  // 모든 필터 및 검색 초기화 함수
+  // 모달 관련 상태
+  const [modalConfig, setModalConfig] = useState<{
+    isOpen: boolean;
+    mode: "view" | "edit";
+    reviewId?: number;
+  }>({ isOpen: false, mode: "view" });
+
   const handleReset = () => {
     setPage(1);
     setSort("write_date_desc");
     setSelectedTags([]);
   };
 
-  // 내 리뷰 목록 조회
   const { data: reviewData, isLoading } = useQuery({
     queryKey: ["myReviews", { page, sort, type, tags: selectedTags }],
     queryFn: () => getMyReviews({ page, sort, type, tags: selectedTags }),
@@ -61,9 +67,20 @@ export default function Mypage() {
             setSort={setSort}
             keyword=''
             onReset={handleReset}
+            onReviewClick={(id: number) =>
+              setModalConfig({ isOpen: true, mode: "view", reviewId: id })
+            }
           />
         </div>
       </div>
+
+      {modalConfig.isOpen && (
+        <ReviewModal
+          mode={modalConfig.mode}
+          reviewId={modalConfig.reviewId}
+          onClose={() => setModalConfig({ ...modalConfig, isOpen: false })}
+        />
+      )}
     </div>
   );
 }
