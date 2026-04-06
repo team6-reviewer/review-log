@@ -17,7 +17,7 @@ router.get("/reviews", reviewController.getReviewList);
 router.get("/reviews/:id", reviewController.getReviewById);
 
 // 내가 쓴 리뷰 조회
-router.get("/auth/me/reviews", reviewController.getMyReviews);
+router.get("/reviews/me", reviewController.getMyReviews);
 
 // 리뷰 생성
 router.post("/reviews", reviewController.postReview);
