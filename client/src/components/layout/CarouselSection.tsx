@@ -10,8 +10,16 @@ import Tag from "@/components/Tag";
 
 // 추후 수정
 interface RankingData {
-  nowPlaying: any[];
-  bestSellers: any[];
+  nowPlaying: {
+    id: number;
+    title: string;
+    posterPath: string;
+  }[];
+  bestSellers: {
+    id: number;
+    title: string;
+    posterPath: string;
+  }[];
   mostReviewed: any[];
   popularTags: any[];
 }
@@ -61,7 +69,7 @@ export default function CarouselSection({ data }: { data: RankingData }) {
   const currentBg = slides[current].bg;
 
   return (
-    <div className='w-full h-full max-w-[360px] aspect-[4/5.2] relative mx-auto rounded-[24px] shadow-sm overflow-hidden'>
+    <div className='w-full h-full max-w-[360px] aspect-[4/5.2] relative mx-auto rounded-lg shadow-sm overflow-hidden'>
       <div
         className={`w-full h-full overflow-y-auto scrollbar-hide transition-colors duration-500 ${currentBg}`}
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
@@ -78,7 +86,7 @@ export default function CarouselSection({ data }: { data: RankingData }) {
                 key={sIdx}
                 className='h-full min-h-full pl-0 p-[5%] flex flex-col gap-2'
               >
-                <h2 className={"text-[28px] font-bold text-white"}>
+                <h2 className={"mt-2 text-[28px] font-bold text-white"}>
                   {slide.title}
                 </h2>
 

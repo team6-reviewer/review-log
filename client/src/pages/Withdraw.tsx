@@ -26,17 +26,13 @@ export default function Withdraw() {
     setIsLoading(true);
 
     try {
-      // 1. 회원탈퇴 API 호출
       const res = await API.post("/auth/withdraw", { password });
 
       if (res.status === 200) {
-        // 2. 성공 시 프론트엔드 데이터 삭제
         localStorage.removeItem("accessToken"); // 메모리/로컬 토큰 삭제
 
         alert("회원 탈퇴가 완료되었습니다. 그동안 이용해 주셔서 감사합니다.");
-
-        // 3. 로그인 페이지로 이동 및 페이지 새로고침 (상태 초기화)
-        window.location.href = "/"; // 추후 /login으로 변경
+        window.location.href = "/login";
       }
     } catch (error: any) {
       const status = error.response?.status;
@@ -45,7 +41,7 @@ export default function Withdraw() {
         alert("비밀번호가 일치하지 않습니다.");
       } else if (status === 401) {
         alert("인증 세션이 만료되었습니다. 다시 로그인 후 시도해 주세요.");
-        navigate("/"); // 추후 /login으로 변경
+        navigate("/login");
       } else if (status === 404) {
         alert("사용자 정보를 찾을 수 없습니다.");
       } else {
@@ -99,7 +95,7 @@ export default function Withdraw() {
             <Button
               type='submit'
               disabled={isLoading}
-              className='flex-1 bg-destructive hover:bg-red-700'
+              className='flex-1 bg-destructive hover:bg-red-700 border-none'
             >
               {isLoading ? "처리 중..." : "탈퇴하기"}
             </Button>

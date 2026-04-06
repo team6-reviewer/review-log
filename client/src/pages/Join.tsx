@@ -107,11 +107,10 @@ export default function Join() {
 
       if (res.status === 201) {
         alert("회원가입이 완료되었습니다!");
-        navigate("/"); // 로그인 페이지로 이동 (추후 /login으로 변경)
+        navigate("/login"); // 로그인 페이지로 이동
       }
     } catch (error: any) {
       if (error.response?.status === 400) {
-        // 추후 중복 관련 백엔드 변동 생기면 반영 예정
         alert(error.response.data.message || "입력값을 확인해 주세요.");
       } else {
         alert("서버 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
