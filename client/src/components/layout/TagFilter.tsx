@@ -11,7 +11,7 @@ export default function TagFilter({
   onTagClick,
 }: TagFilterProps) {
   return (
-    <div className='bg-white p-6 rounded-[20px] shadow-sm border border-light-gray flex flex-col gap-4'>
+    <div className='bg-white p-6 rounded-lg shadow-sm border border-light-gray flex flex-col gap-4'>
       <div className='flex items-center gap-4'>
         <span className='text-dark-gray font-bold shrink-0'>장르</span>
         <div className='flex flex-wrap gap-2'>

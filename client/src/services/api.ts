@@ -45,7 +45,7 @@ API.interceptors.response.use(
         // 리프레시 토큰도 만료된 경우
         alert("로그인 세션이 만료되었습니다. 다시 로그인해주세요.");
         localStorage.removeItem("accessToken");
-        window.location.href = "/"; // 추후 /login으로 변경
+        window.location.href = "/login";
         return Promise.reject(refreshError);
       }
     }
