@@ -6,6 +6,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Tag from "@/components/Tag";
+import defaultImg from "@/assets/defaultImg.png";
 
 interface ReviewCardProps {
   title: string;
@@ -13,10 +14,11 @@ interface ReviewCardProps {
   date: string;
   rating: number;
   tags?: { name: string; type: "type" | "genre" | "mood" }[];
-  onDelete?: () => void;
-  onEdit?: () => void;
+  isMine?: boolean; // 내가 쓴 글인지 여부 추가
+  onDelete?: (e: React.MouseEvent) => void; // 이벤트 전파 방지를 위해 e 추가
+  onEdit?: (e: React.MouseEvent) => void;
   onClick?: () => void;
-  isSimple?: boolean; // 간단한 카드 여부
+  isSimple?: boolean;
 }
 
 export default function ReviewCard({
@@ -25,6 +27,7 @@ export default function ReviewCard({
   date,
   rating,
   tags,
+  isMine = false, // 기본값 false
   onDelete,
   onEdit,
   onClick,
@@ -33,12 +36,11 @@ export default function ReviewCard({
   // 별점 렌더링 함수
   const renderStars = (rating: number) => {
     const stars = [];
-    const fullStars = Math.floor(rating); // 꽉 찬 별 개수
-    const hasHalfStar = rating % 1 !== 0; // 반 별 유무 (0.5 단위)
+    const fullStars = Math.floor(rating);
+    const hasHalfStar = rating % 1 !== 0;
 
     for (let i = 1; i <= 5; i++) {
       if (i <= fullStars) {
-        // 꽉 찬 별
         stars.push(
           <Star
             key={i}
@@ -46,24 +48,18 @@ export default function ReviewCard({
           />,
         );
       } else if (i === fullStars + 1 && hasHalfStar) {
-        // 반 별 (정확히 다음 순서에 하나만 렌더링)
         stars.push(
           <div key={i} className='relative w-3.5 h-3.5'>
-            {/* 배경: 빈 별 (회색) */}
             <Star className='absolute inset-0 w-full h-full fill-light-gray text-light-gray' />
-
-            {/* 위층: 꽉 찬 별 (노란색) */}
             <div
               className='absolute inset-0 w-full h-full z-10'
               style={{ clipPath: "inset(0 50% 0 0)" }}
             >
-              {/* 오른쪽 50%를 도려냄 */}
               <Star className='w-full h-full fill-star-yellow text-star-yellow' />
             </div>
           </div>,
         );
       } else {
-        // 나머지 빈 별
         stars.push(
           <Star
             key={i}
@@ -79,13 +75,14 @@ export default function ReviewCard({
 
   return (
     <div
-      className={`${width} flex flex-col gap-2 bg-white rounded-[20px] overflow-hidden shadow-md p-4 group cursor-pointer`}
+      className={`${width} flex flex-col gap-2 bg-white rounded-lg overflow-hidden shadow-md p-4 group cursor-pointer hover:shadow-lg transition-shadow`}
       onClick={onClick}
     >
-      {!isSimple && (
-        <div className='flex justify-end'>
+      {/* isSimple이 아니고 + 내 리뷰일 때만 드롭다운 노출 */}
+      {!isSimple && !!isMine && (
+        <div className='flex justify-end' onClick={(e) => e.stopPropagation()}>
           <DropdownMenu>
-            <DropdownMenuTrigger className='hover:bg-light-gray transition-colors outline-none border-none'>
+            <DropdownMenuTrigger className='hover:bg-light-gray transition-colors outline-none border-none rounded-full p-1'>
               <MoreHorizontal className='w-5 h-5 text-dark-gray' />
             </DropdownMenuTrigger>
             <DropdownMenuContent
@@ -94,13 +91,13 @@ export default function ReviewCard({
             >
               <DropdownMenuItem
                 onClick={onEdit}
-                className='text-[13px] text-main-gray cursor-pointer focus:bg-light-gray focus:text-main-gray py-2'
+                className='text-[14px] text-black cursor-pointer focus:bg-light-gray focus:text-main-gray py-2'
               >
                 리뷰 수정
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={onDelete}
-                className='text-[13px] text-destructive cursor-pointer focus:bg-light-gray focus:text-destructive py-2'
+                className='text-[14px] text-destructive cursor-pointer focus:bg-light-gray focus:text-destructive py-2'
               >
                 리뷰 삭제
               </DropdownMenuItem>
@@ -110,16 +107,20 @@ export default function ReviewCard({
       )}
 
       {/* 포스터 이미지 */}
-      <div className='w-full aspect-[4/3] overflow-hidden'>
+      <div className='w-full aspect-[4/3] overflow-hidden rounded-sm'>
         <img
-          src={posterUrl}
+          src={posterUrl || defaultImg}
           alt={title}
           className='w-full h-full object-cover'
+          onError={(e) => {
+            // 데이터는 있는데 URL이 깨졌거나 이미지 서버 에러일 때
+            (e.currentTarget as HTMLImageElement).src = defaultImg;
+          }}
         />
       </div>
 
       {/* 정보 섹션 */}
-      <div className='flex flex-col gap-2 px-0.5'>
+      <div className='flex flex-col gap-2 px-0.5 mt-1'>
         <h3 className='text-[20px] font-bold text-movie-title truncate leading-[1.2]'>
           {title}
         </h3>
@@ -130,7 +131,7 @@ export default function ReviewCard({
         </div>
 
         {!isSimple && (
-          <div className='flex gap-1.5 flex-wrap'>
+          <div className='flex gap-1.5 flex-wrap mt-1'>
             {tags?.map((tag) => (
               <Tag
                 key={tag.name}
