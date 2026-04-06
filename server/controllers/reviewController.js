@@ -131,6 +131,10 @@ exports.putReview = async (req, res) => {
         const result = await reviewModel.putReview(reviewId, userId, title, score, content, watch_date, type, content_image, genre_tags, mood_tags);
         res.status(200).json(result);
     } catch(error) {
+
+        if (error.message == "FUTURE_WATCHDATE") {
+            return res.status(400).json({ error: "리뷰작성 실패", message: "관람일자가 미래"});
+        }
         
         res.status(500).json({ error: "리뷰수정 실패", message: error.message });
     }
@@ -165,3 +169,13 @@ exports.getTopReviewed = async (req, res) => {
         res.status(500).json({ error: "리뷰 많은 작품 조회 실패", message: error.message });
     }
 };
+
+// 가장 많이 사용된 태그 상위 5개
+exports.getTopUsedTags = async (req, res) => {
+    try {
+        const results = await reviewModel.getTopTag();
+        res.status(200).json(results);
+    } catch (error) {
+        res.status(500).json({ error: "많이 사용된 태그 조회 실패", message: error.message });
+    }
+}
