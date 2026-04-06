@@ -261,7 +261,7 @@ export default function WriteStep({
               {!isView ? (
                 <>
                   <div className='flex gap-4'>
-                    <span className='text-xs text-dark-gray text-nowrap'>
+                    <span className='mt-2 text-sm text-dark-gray text-nowrap'>
                       장르
                     </span>
                     <div className='flex flex-wrap gap-2'>
@@ -284,7 +284,7 @@ export default function WriteStep({
                     </div>
                   </div>
                   <div className='flex gap-4'>
-                    <span className='text-xs text-dark-gray text-nowrap'>
+                    <span className='mt-2 text-sm text-dark-gray text-nowrap'>
                       분위기
                     </span>
                     <div className='flex flex-wrap gap-2'>

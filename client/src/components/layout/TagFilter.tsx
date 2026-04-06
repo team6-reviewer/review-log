@@ -13,7 +13,7 @@ export default function TagFilter({
   return (
     <div className='bg-white p-6 rounded-lg shadow-sm border border-light-gray flex flex-col gap-4'>
       <div className='flex items-center gap-4'>
-        <span className='text-dark-gray font-bold shrink-0'>장르</span>
+        <span className='text-dark-gray shrink-0'>장르</span>
         <div className='flex flex-wrap gap-2'>
           {GENRE_TAGS.map((tag) => (
             <Tag
@@ -27,7 +27,7 @@ export default function TagFilter({
         </div>
       </div>
       <div className='flex items-center gap-4'>
-        <span className='text-dark-gray font-bold shrink-0'>분위기</span>
+        <span className='text-dark-gray shrink-0'>분위기</span>
         <div className='flex flex-wrap gap-2'>
           {MOOD_TAGS.map((tag) => (
             <Tag

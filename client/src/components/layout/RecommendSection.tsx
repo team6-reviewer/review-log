@@ -36,7 +36,7 @@ export default function RecommendSection({
   };
 
   return (
-    <section className='shadow-sm bg-tag-recomm px-8 py-6 rounded-lg flex flex-col lg:flex-row items-center justify-between gap-8 relative overflow-hidden'>
+    <section className='min-h-[272px] shadow-sm bg-tag-recomm px-8 py-6 rounded-lg flex flex-col lg:flex-row items-center justify-between gap-8 relative overflow-hidden'>
       <div className='flex flex-col items-center lg:items-start gap-2'>
         <div className='flex flex-row gap-2 lg:flex-col lg:gap-0 z-10 shrink-0 min-w-fit select-none text-[clamp(20px,3vw,32px)] font-bold leading-tight whitespace-nowrap text-main-gray'>
           <span>당신도 좋아할 </span>
@@ -61,10 +61,11 @@ export default function RecommendSection({
         {!data || data?.length === 0 || data?.recommendations?.length === 0 ? (
           <div className='flex flex-col items-center lg:items-start gap-2 z-10 shrink-0 min-w-fit select-none text-dark-gray'>
             <span className=' text-[clamp(20px,3vw,32px)] font-bold leading-tight whitespace-nowrap'>
-              당신의 리뷰를 기다려요.
+              당신과 취향이 같은 리뷰를 찾고 있어요.
             </span>
             <span className='text-sm'>
-              리뷰를 작성하시면 태그를 바탕으로 리뷰를 추천해 드릴게요.
+              더 다양한 태그로 기록을 남겨주시면 더 빠르게 추천 리뷰를
+              찾아드릴게요.
             </span>
           </div>
         ) : (
