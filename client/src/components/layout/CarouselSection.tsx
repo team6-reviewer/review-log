@@ -43,13 +43,13 @@ export default function CarouselSection({ data }: { data: RankingData }) {
       isTag: false,
     },
     {
-      title: "가장 리뷰 많은 작품 순위",
+      title: "리뷰 많은 작품 순위",
       items: data.mostReviewed,
       bg: "bg-rank-review",
       isTag: false,
     },
     {
-      title: "가장 많이 쓰인 태그 순위",
+      title: "많이 쓰인 태그 순위",
       items: data.popularTags,
       bg: "bg-rank-tag",
       isTag: true,
@@ -94,7 +94,7 @@ export default function CarouselSection({ data }: { data: RankingData }) {
                 <div className='h-full min-h-0 flex-1 flex flex-col gap-4 overflow-hidden'>
                   {slide.isTag ? (
                     /* 태그 레이아웃: 2열 그리드 */
-                    <div className='flex-1 flex flex-col justify-between gap-[clamp(1rem,4vh,3rem)]'>
+                    <div className='flex-1 flex flex-col justify-between gap-[clamp(1rem,3vh,3rem)]'>
                       {slide.items.length === 0 ? (
                         <p className='text-white text-center mt-8'>
                           데이터가 없습니다.

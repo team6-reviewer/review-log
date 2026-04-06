@@ -98,7 +98,11 @@ export default function Home() {
               }}
             />
             {/* 추후 추천 섹션 카드 클릭 시 상세조회 연결 예정 */}
-            <RecommendSection />
+            <RecommendSection
+              onReviewClick={(id: number) =>
+                setModalConfig({ isOpen: true, mode: "view", reviewId: id })
+              }
+            />
           </div>
         </div>
 

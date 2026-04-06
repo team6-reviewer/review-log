@@ -68,3 +68,11 @@ export const getMyReviews = async ({
   });
   return data;
 };
+
+// 태그 기반 리뷰 추천 목록 조회
+export const getRecommendedReviews = async (limit: number = 3) => {
+  const { data } = await API.get("/reviews/recommendations", {
+    params: { limit },
+  });
+  return data;
+};
