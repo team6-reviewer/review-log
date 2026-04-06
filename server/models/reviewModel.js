@@ -1,10 +1,16 @@
 const pool = require("../config/db");
 
 // 1. 상세 조회
-exports.reviewById = async (review_id) => {
-  const sql = `SELECT 
+exports.reviewById = async (loginUserId, review_id) => {
+    const sql = `SELECT 
                     r.id,
+                    r.user_id,
                     r.title,
+                    u.nickname,
+                    CASE
+                        WHEN r.user_id = ? THEN true
+                        ELSE false
+                    END AS isMine, 
                     r.content_image,
                     r.type, 
                     r.score,
@@ -13,20 +19,29 @@ exports.reviewById = async (review_id) => {
                     r.content,
                     GROUP_CONCAT(t.tagname SEPARATOR ', ') AS tags                 
                 FROM review_Table r
+                LEFT JOIN user_Table u ON r.user_id = u.id
                 LEFT JOIN reviewTag_Table rt on r.id = rt.review_id
                 LEFT JOIN tag_Table t ON rt.tag_id = t.id 
                 WHERE r.id = ?    
-                GROUP BY r.id, r.title, r.content_image, r.type, r.score, r.write_date, r.watch_date, r.content                          
+                GROUP BY 
+                    r.id, r.user_id, r.title, u.nickname,
+                    r.content_image, r.type, r.score, 
+                    r.write_date, r.watch_date, r.content                          
                 `;
-  const [rows] = await pool.query(sql, [review_id]);
-  return rows[0];
+    const [rows] = await pool.query(sql, [loginUserId, review_id]);
+    return rows[0];
 };
 
 // 2. 목록 전체 조회
-exports.reviewList = async (type, keyword, searchType, sort, tagnames, page, size) => {
-  let sql = `SELECT 
+exports.reviewList = async (loginUserId, type, keyword, searchType, sort, tagnames, page, size) => {
+    let sql = `SELECT 
                     r.id,
+                    r.user_id,
                     r.title,
+                    CASE
+                        WHEN r.user_id = ? THEN true
+                        ELSE false
+                    END AS isMine,
                     r.type, 
                     r.content_image,
                     r.score,     
@@ -34,28 +49,28 @@ exports.reviewList = async (type, keyword, searchType, sort, tagnames, page, siz
                     r.watch_date,              
                     GROUP_CONCAT(t.tagname SEPARATOR ', ') AS tags
                 FROM review_Table r
-                LEFT JOIN reviewTag_Table rt on r.id = rt.review_id
+                LEFT JOIN reviewTag_Table rt ON r.id = rt.review_id
                 LEFT JOIN tag_Table t ON rt.tag_id = t.id      
                 WHERE 1=1          
                 `;
 
-  let countSql = `SELECT COUNT(DISTINCT r.id) AS total
+    let countSql = `SELECT COUNT(DISTINCT r.id) AS total
                     FROM review_Table r
                     WHERE 1 = 1`;
 
-  const params = [];
-  const countParams = [];
+    const params = [loginUserId];
+    const countParams = [];
 
-  // 영화 & 도서탭 조회
-  if (type === "movie" || type === "book") {
-    sql += ` AND r.type = ?`;
-    countSql += ` AND r.type = ?`;
-    params.push(type);
-    countParams.push(type);
-  }
+    // 영화 & 도서탭 조회
+    if (type === "movie" || type === "book") {
+        sql += ` AND r.type = ?`;
+        countSql += ` AND r.type = ?`;
+        params.push(type);
+        countParams.push(type);
+    }
 
-  // 검색 조회
-  if (keyword) {
+    // 검색 조회
+    if (keyword) {
         if (searchType === "title") {
             sql += ` AND r.title LIKE ?`;
             countSql += ` AND r.title LIKE ?`;
@@ -74,10 +89,10 @@ exports.reviewList = async (type, keyword, searchType, sort, tagnames, page, siz
         }
     }
 
-  // 태그 필터
-  if (tagnames && tagnames.length > 0) {
-    const placeholders = tagnames.map(() => "?").join(", ");
-    sql += ` AND EXISTS (
+    // 태그 필터
+    if (tagnames && tagnames.length > 0) {
+        const placeholders = tagnames.map(() => "?").join(", ");
+        sql += ` AND EXISTS (
                     SELECT 1
                     FROM reviewTag_Table rt2
                     JOIN tag_Table t2 ON rt2.tag_id = t2.id
@@ -85,7 +100,7 @@ exports.reviewList = async (type, keyword, searchType, sort, tagnames, page, siz
                     AND t2.tagname IN (${placeholders})
                     )`;
 
-    countSql += ` AND EXISTS (
+        countSql += ` AND EXISTS (
                     SELECT 1
                     FROM reviewTag_Table rt2
                     JOIN tag_Table t2 ON rt2.tag_id = t2.id
@@ -93,43 +108,43 @@ exports.reviewList = async (type, keyword, searchType, sort, tagnames, page, siz
                     AND t2.tagname IN (${placeholders})
                     )`;
 
-    params.push(...tagnames);
-    countParams.push(...tagnames);
-  }
+        params.push(...tagnames);
+        countParams.push(...tagnames);
+    }
 
-  sql += ` GROUP BY r.id, r.title, r.type, r.content_image, r.score, r.write_date, r.watch_date`;
+    sql += ` GROUP BY r.id, r.title, r.user_id, r.type, r.content_image, r.score, r.write_date, r.watch_date`;
 
-  // 정렬 (별점순, 관람일자순, 작성일자순)
-  if (sort === "score_desc") {
-    sql += ` ORDER BY r.score desc`;
-  } else if (sort === "watch_date_desc") {
-    sql += ` ORDER BY r.watch_date desc`;
-  } else if (sort === "write_date_desc") {
-    sql += ` ORDER BY r.write_date desc`;
-  } else {
-    sql += ` ORDER BY r.id desc`;
-  }
+    // 정렬 (별점순, 관람일자순, 작성일자순)
+    if (sort === "score_desc") {
+        sql += ` ORDER BY r.score desc`;
+    } else if (sort === "watch_date_desc") {
+        sql += ` ORDER BY r.watch_date desc`;
+    } else if (sort === "write_date_desc") {
+        sql += ` ORDER BY r.write_date desc`;
+    } else {
+        sql += ` ORDER BY r.id desc`;
+    }
 
-  // 페이징 구현
-  const offset = (page - 1) * size;
-  sql += ` LIMIT ?, ?`;
+    // 페이징 구현
+    const offset = (page - 1) * size;
+    sql += ` LIMIT ?, ?`;
 
-  params.push(offset, size);
+    params.push(offset, size);
 
-  const [countRows] = await pool.query(countSql, countParams);
-  const [rows] = await pool.query(sql, params);
+    const [countRows] = await pool.query(countSql, countParams);
+    const [rows] = await pool.query(sql, params);
 
-  return {
-    page: Number(page),
-    size: Number(size),
-    total: countRows[0].total,
-    data: rows,
-  };
+    return {
+        page: Number(page),
+        size: Number(size),
+        total: countRows[0].total,
+        data: rows,
+    };
 };
 
 // 3. 내 리뷰 목록 조회
 exports.myReviews = async (userId, type, sort, tagnames, page, size) => {
-  let sql = `SELECT 
+    let sql = `SELECT 
                     r.id,
                     r.title,
                     r.content_image,
@@ -144,26 +159,26 @@ exports.myReviews = async (userId, type, sort, tagnames, page, size) => {
                 WHERE r.user_id = ?       
                 `;
 
-  let countSql = `SELECT COUNT(DISTINCT r.id) AS total
+    let countSql = `SELECT COUNT(DISTINCT r.id) AS total
                     FROM review_Table r
                     WHERE r.user_id = ? 
                     `;
 
-  const params = [userId];
-  const countParams = [userId];
+    const params = [userId];
+    const countParams = [userId];
 
-  // 영화 & 도서탭 조회
-  if (type === "movie" || type === "book") {
-    sql += ` AND r.type = ?`;
-    countSql += ` AND r.type = ?`;
-    params.push(type);
-    countParams.push(type);
-  }
+    // 영화 & 도서탭 조회
+    if (type === "movie" || type === "book") {
+        sql += ` AND r.type = ?`;
+        countSql += ` AND r.type = ?`;
+        params.push(type);
+        countParams.push(type);
+    }
 
-  // 태그 필터
-  if (tagnames && tagnames.length > 0) {
-    const placeholders = tagnames.map(() => "?").join(", ");
-    sql += ` AND EXISTS (
+    // 태그 필터
+    if (tagnames && tagnames.length > 0) {
+        const placeholders = tagnames.map(() => "?").join(", ");
+        sql += ` AND EXISTS (
                     SELECT 1
                     FROM reviewTag_Table rt2
                     JOIN tag_Table t2 ON rt2.tag_id = t2.id
@@ -171,7 +186,7 @@ exports.myReviews = async (userId, type, sort, tagnames, page, size) => {
                     AND t2.tagname IN (${placeholders})
                     )`;
 
-    countSql += ` AND EXISTS (
+        countSql += ` AND EXISTS (
                     SELECT 1
                     FROM reviewTag_Table rt2
                     JOIN tag_Table t2 ON rt2.tag_id = t2.id
@@ -219,7 +234,7 @@ exports.myReviews = async (userId, type, sort, tagnames, page, size) => {
 
 // 리뷰 작성
 exports.postReview = async (userId, title, score, content, watch_date, type, content_image, genre_tags, mood_tags) => {
-    
+
     const connection = await pool.getConnection();
     try {
         await connection.beginTransaction();
@@ -230,7 +245,7 @@ exports.postReview = async (userId, title, score, content, watch_date, type, con
             values (?, ?, ?, ?, ?, ?, ?)
         `;
         const [reviewResult] = await connection.query(reviewSql, [userId, title, score, content, watch_date, type, content_image]);
-        const newReviewId = reviewResult.insertId; 
+        const newReviewId = reviewResult.insertId;
         // DB에서 생성된 리뷰의 고유번호를 담음 
 
 
@@ -247,7 +262,7 @@ exports.postReview = async (userId, title, score, content, watch_date, type, con
         // 마지막에 쓰레기 값들 골라내기
         let cleanTags = [];
         for (let tag of allTags) {
-            if (tag) { 
+            if (tag) {
                 cleanTags.push(tag); // cleanTags에 담음
             }
         }
@@ -261,15 +276,15 @@ exports.postReview = async (userId, title, score, content, watch_date, type, con
         // 태그 id 찾아옴
         const selectTagsSql = `select id from tag_Table where tagname in (?)`;
         const [tagRows] = await connection.query(selectTagsSql, [allTags]);
-        
+
         // 리뷰-태그 테이블에 리뷰id - 태그 id 매핑 정보 삽입
         const reviewTagValues = tagRows.map(tag => [newReviewId, tag.id]);
-        
+
         // 태그가 DB에 존재하지 않는 태그일 경우 롤백
         if (reviewTagValues.length === 0) {
             throw new Error("DB에 존재하지 않는 태그");
         }
-        
+
         const insertReviewTagSql = `insert into reviewTag_Table (review_id, tag_id) values ?`;
         await connection.query(insertReviewTagSql, [reviewTagValues]);
 
@@ -287,7 +302,7 @@ exports.postReview = async (userId, title, score, content, watch_date, type, con
 
 // 리뷰 수정
 exports.putReview = async (reviewId, userId, title, score, content, watch_date, type, content_image, genre_tags, mood_tags) => {
-    
+
     const connection = await pool.getConnection();
     try {
         await connection.beginTransaction();
@@ -336,12 +351,12 @@ exports.putReview = async (reviewId, userId, title, score, content, watch_date, 
 
         // 리뷰아이디, 태그아이디
         const reviewTagValues = tagRows.map(tag => [reviewId, tag.id]);
-        
+
         // 태그가 DB 존재하지 않는 태그일 경우 롤백
         if (reviewTagValues.length === 0) {
             throw new Error("DB에 존재하지 않는 태그");
         }
-        
+
         const insertReviewTagSql = `insert into reviewTag_Table (review_id, tag_id) values ?`;
         await connection.query(insertReviewTagSql, [reviewTagValues]);
 
@@ -369,7 +384,7 @@ exports.deleteReview = async (reviewId, userId) => {
         // 그 뒤에 리뷰 본문 삭제
         const deleteReviewSql = `delete from review_Table where id = ? and user_id = ?`;
         const [result] = await connection.query(deleteReviewSql, [reviewId, userId]);
-        
+
         // 삭제된 행이 없으면, 남의 글을 지우려 했거나 없는 글이므로 롤백
         if (result.affectedRows === 0) {
             throw new Error("권한이 없거나 존재하지 않는 리뷰임");
