@@ -63,7 +63,7 @@ export default function CarouselSection({ data }: { data: RankingData }) {
   return (
     <div className='w-full h-full max-w-[360px] aspect-[4/5.2] relative mx-auto rounded-lg shadow-sm overflow-hidden'>
       <div
-        className={`pt-2 w-full h-full overflow-y-auto scrollbar-hide transition-colors duration-500 ${currentBg}`}
+        className={`w-full h-full overflow-y-auto scrollbar-hide transition-colors duration-500 ${currentBg}`}
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
         <Carousel
@@ -78,7 +78,7 @@ export default function CarouselSection({ data }: { data: RankingData }) {
                 key={sIdx}
                 className='h-full min-h-full pl-0 p-[5%] flex flex-col gap-2'
               >
-                <h2 className={"text-[28px] font-bold text-white"}>
+                <h2 className={"mt-2 text-[28px] font-bold text-white"}>
                   {slide.title}
                 </h2>
 

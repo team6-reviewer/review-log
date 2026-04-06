@@ -90,13 +90,13 @@ export default function ReviewCard({
             >
               <DropdownMenuItem
                 onClick={onEdit}
-                className='text-[13px] text-main-gray cursor-pointer focus:bg-light-gray focus:text-main-gray py-2'
+                className='text-[14px] text-black cursor-pointer focus:bg-light-gray focus:text-main-gray py-2'
               >
                 리뷰 수정
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={onDelete}
-                className='text-[13px] text-destructive cursor-pointer focus:bg-light-gray focus:text-destructive py-2'
+                className='text-[14px] text-destructive cursor-pointer focus:bg-light-gray focus:text-destructive py-2'
               >
                 리뷰 삭제
               </DropdownMenuItem>

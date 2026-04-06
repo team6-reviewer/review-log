@@ -107,6 +107,27 @@ export default function WriteStep({
 
   const isView = currentMode === "view";
 
+  // 삭제 Mutation
+  const deleteMutation = useMutation({
+    mutationFn: (id: number) => API.delete(`/reviews/${id}`),
+    onSuccess: () => {
+      // 리스트 데이터 무효화 (홈, 마이페이지 등)
+      queryClient.invalidateQueries({ queryKey: ["reviews"] });
+      queryClient.invalidateQueries({ queryKey: ["myReviews"] });
+      alert("리뷰가 삭제되었습니다.");
+      onClose(); // 삭제 성공 시 모달 닫기
+    },
+    onError: (err: any) => {
+      alert(err.response?.data?.message || "삭제 중 오류가 발생했습니다.");
+    },
+  });
+
+  // 삭제 핸들러 함수
+  const handleDelete = () => {
+    if (window.confirm("정말 삭제하시겠습니까?")) {
+      deleteMutation.mutate(reviewId);
+    }
+  };
   return (
     <div className='rounded-lg p-12 flex flex-col items-center gap-10 bg-white max-h-[90vh] overflow-y-auto scrollbar-hide'>
       <div className='flex flex-row gap-12 items-start'>
@@ -300,13 +321,16 @@ export default function WriteStep({
         />
         <div className='flex justify-end'>
           {isView && !!detailData?.isMine && (
-            <button className='text-destructive text-sm font-medium underline'>
+            <button
+              onClick={handleDelete}
+              className='text-destructive text-sm font-medium underline'
+            >
               리뷰 삭제
             </button>
           )}
           {isView && !detailData?.isMine && (
             <span className='text-main-gray text-sm font-medium'>
-              by. 닉네임
+              by. {detailData?.nickname}
             </span>
           )}
         </div>
