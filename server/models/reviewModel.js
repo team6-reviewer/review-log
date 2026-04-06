@@ -250,6 +250,12 @@ exports.postReview = async (userId, title, score, content, watch_date, type, con
             throw new Error("ALREADY_REVIEWED");
         }
 
+        // 관람일자가 미래일 경우 방어 로직
+        if(new Date(watch_date)>new Date())
+        {
+            throw new Error("FUTURE_WATCHDATE");
+        }
+
         // 이후 리뷰 삽입 로직
         // 우선 리뷰테이블에 리뷰 삽입
         const reviewSql = `

@@ -96,6 +96,11 @@ exports.postReview = async (req, res) => {
         if (error.message === "ALREADY_REVIEWED") {
             return res.status(409).json({ error: "리뷰작성 실패", message: "이미 해당 작품에 대한 리뷰를 작성함(리뷰 중복 작성)" });
         }
+
+        if (error.message == "FUTURE_WATCHDATE") {
+            return res.status(400).json({ error: "리뷰작성 실패", message: "관람일자가 미래"});
+        }
+        
         res.status(500).json({ error: "리뷰작성 실패", message: error.message});
     }
 }
