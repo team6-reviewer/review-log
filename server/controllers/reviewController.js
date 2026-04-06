@@ -150,3 +150,13 @@ exports.deleteReview = async (req, res) => {
         res.status(500).json({ error: "리뷰삭제 실패", message: error.message});
     }
 }
+
+// 가장 리뷰 많은 작품 순위 상위 5개
+exports.getTopReviewed = async (req, res) => {
+    try {
+        const results = await reviewModel.getTopContent();
+        res.status(200).json(results);
+    } catch (error) {
+        res.status(500).json({ error: "리뷰 많은 작품 조회 실패", message: error.message });
+    }
+};

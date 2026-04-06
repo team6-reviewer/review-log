@@ -412,3 +412,14 @@ exports.deleteReview = async (reviewId, userId) => {
         connection.release();
     }
 };
+
+// 가장 리뷰 많은 작품 순위
+exports.getTopContent = async () => {
+   
+    const sql = `
+        select title, max(content_image) as posterPath, type from review_Table
+        group by title, type 
+        order by count(id) desc limit 5`; // 개수 까지 확인하려면 count(id) 넣기
+    const [rows] = await pool.query(sql);
+    return rows;
+};
