@@ -23,5 +23,8 @@ router.put('/reviews/:id', verifyToken, reviewController.putReview);
 // 리뷰 삭제
 router.delete('/reviews/:id', verifyToken, reviewController.deleteReview);
 
+// 가장 리뷰 많은 작품 순위 상위 5개
+router.get('/reviews/rank/most-reviewed', verifyToken, reviewController.getTopReviewed);
+
 
 module.exports = router;
