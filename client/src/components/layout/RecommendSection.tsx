@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import ReviewCard from "@/components/ReviewCard";
+import defaultImg from "@/assets/defaultImg.png";
 
 export default function RecommendSection() {
   // 마우스 드래그 스크롤 구현
@@ -46,8 +47,8 @@ export default function RecommendSection() {
           <div key={i} className='shrink-0 select-none pointer-events-none'>
             <div className='pointer-events-auto'>
               <ReviewCard
-                title='디디의 우산 - 황정은 연작소설'
-                posterUrl='https://image.aladin.co.kr/product/17729/72/cover500/8936437542_1.jpg'
+                title='작품 제목'
+                posterUrl={defaultImg}
                 date='2026-02-28'
                 rating={4.5}
                 isSimple={true}

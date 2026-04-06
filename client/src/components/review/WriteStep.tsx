@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import API from "@/services/api";
 import { GENRE_TAGS, MOOD_TAGS } from "@/constants/tags";
 import { useAuthStore } from "@/stores/useAuthStore";
+import defaultImg from "@/assets/defaultImg.png";
 
 export default function WriteStep({
   mode,
@@ -152,9 +153,13 @@ export default function WriteStep({
       <div className='flex flex-row gap-12 items-start'>
         <div className='w-[280px] shrink-0 aspect-[3/4.2] rounded-[24px] overflow-hidden shadow-md'>
           <img
-            src={formData.posterPath}
+            src={formData.posterPath || defaultImg}
             className='w-full h-full object-cover'
             alt='poster'
+            onError={(e) => {
+              // 데이터는 있는데 URL이 깨졌거나 이미지 서버 에러일 때
+              (e.currentTarget as HTMLImageElement).src = defaultImg;
+            }}
           />
         </div>
 

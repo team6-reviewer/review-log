@@ -10,8 +10,16 @@ import Tag from "@/components/Tag";
 
 // 추후 수정
 interface RankingData {
-  nowPlaying: any[];
-  bestSellers: any[];
+  nowPlaying: {
+    id: number;
+    title: string;
+    posterPath: string;
+  }[];
+  bestSellers: {
+    id: number;
+    title: string;
+    posterPath: string;
+  }[];
   mostReviewed: any[];
   popularTags: any[];
 }

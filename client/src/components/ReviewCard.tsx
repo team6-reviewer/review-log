@@ -6,6 +6,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Tag from "@/components/Tag";
+import defaultImg from "@/assets/defaultImg.png";
 
 interface ReviewCardProps {
   title: string;
@@ -108,9 +109,13 @@ export default function ReviewCard({
       {/* 포스터 이미지 */}
       <div className='w-full aspect-[4/3] overflow-hidden rounded-sm'>
         <img
-          src={posterUrl}
+          src={posterUrl || defaultImg}
           alt={title}
           className='w-full h-full object-cover'
+          onError={(e) => {
+            // 데이터는 있는데 URL이 깨졌거나 이미지 서버 에러일 때
+            (e.currentTarget as HTMLImageElement).src = defaultImg;
+          }}
         />
       </div>
 
