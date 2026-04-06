@@ -16,6 +16,9 @@ router.get("/reviews/me", reviewController.getMyReviews);
 // 가장 리뷰 많은 작품 순위 상위 5개
 router.get("/reviews/rank/most-reviewed", reviewController.getTopReviewed);
 
+// 가장 많이 사용된 태그 순위 상위 5개
+router.get("/reviews/rank/most-used-tag", reviewController.getTopUsedTags);
+
 // 전체 조회
 router.get("/reviews", reviewController.getReviewList);
 
