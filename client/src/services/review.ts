@@ -56,7 +56,7 @@ export const getMyReviews = async ({
   type,
   tags,
 }: GetMyReviewsParams) => {
-  const { data } = await API.get("/auth/me/reviews", {
+  const { data } = await API.get("/reviews/me", {
     params: {
       page,
       size: 10,
