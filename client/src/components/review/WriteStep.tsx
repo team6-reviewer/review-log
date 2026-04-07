@@ -109,7 +109,9 @@ export default function WriteStep({
         ? API.put(`/reviews/${reviewId}`, data)
         : API.post("/reviews", data),
     onSuccess: () => {
+      // 리뷰 리스트, 마이페이지, 추천, 순위 데이터 등 무효화
       queryClient.invalidateQueries({ queryKey: ["reviews"] });
+      queryClient.invalidateQueries({ queryKey: ["ranking"] });
       if (currentMode === "edit") {
         // 수정 모드일 때는 상세 데이터를 다시 불러오고 조회 모드로 변경
         queryClient.invalidateQueries({

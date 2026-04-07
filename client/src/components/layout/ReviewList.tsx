@@ -141,6 +141,7 @@ export default function ReviewList({
             <button
               onClick={() => setPage((p: number) => Math.max(p - 1, 1))}
               disabled={page === 1}
+              className='disabled:opacity-50 disabled:cursor-default'
             >
               <ChevronLeft />
             </button>
@@ -152,6 +153,7 @@ export default function ReviewList({
                 setPage((p: number) => Math.min(p + 1, Math.ceil(total / 10)))
               }
               disabled={page === Math.ceil(total / 10) || total === 0}
+              className='disabled:opacity-50 disabled:cursor-default'
             >
               <ChevronRight />
             </button>
