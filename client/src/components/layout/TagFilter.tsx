@@ -6,6 +6,11 @@ interface TagFilterProps {
   onTagClick: (tagname: string) => void;
 }
 
+/**
+ * 메인화면, 마이페이지 리뷰 리스트에서 태그로 필터링할 때 사용하는 컴포넌트
+ * @param selectedTags 현재 선택된 태그 배열
+ * @param onTagClick 태그 클릭 시 호출되는 함수 (클릭한 태그의 tagname이 인자로 전달됨)
+ */
 export default function TagFilter({
   selectedTags,
   onTagClick,

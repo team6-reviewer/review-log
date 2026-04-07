@@ -9,12 +9,18 @@ interface SearchStepProps {
   onClose: () => void;
 }
 
+/**
+ * 리뷰 작성 전 작품 검색 단계 컴포넌트
+ * @param onNext 검색에서 작품 선택 시 호출되는 함수 (선택한 작품 데이터가 인자로 전달됨)
+ * @param onClose 모달 닫기 함수
+ */
 export default function SearchStep({ onNext, onClose }: SearchStepProps) {
   const [searchType, setSearchType] = useState<"movie" | "book">("movie");
   const [keyword, setKeyword] = useState("");
   const [results, setResults] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  // 작품 검색 함수 (영화/도서 구분하여 API 호출)
   const handleSearch = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     if (!keyword.trim()) return alert("검색어를 입력해주세요.");
@@ -34,6 +40,7 @@ export default function SearchStep({ onNext, onClose }: SearchStepProps) {
     }
   };
 
+  // 검색 결과에서 작품 선택 시 작품 데이터를 다음 단계로 전달
   const handleItemClick = (item: any) => {
     const payload = {
       title: item.title,

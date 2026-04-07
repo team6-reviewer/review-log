@@ -1,6 +1,6 @@
-import { User, PenLine } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import CarouselSection from "@/components/layout/CarouselSection";
+import { Button } from "@/components/ui/button";
+import { PenLine, User } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 interface SidebarProps {
@@ -8,6 +8,11 @@ interface SidebarProps {
   onCreateReview: () => void;
 }
 
+/**
+ * 메인화면 좌측 사이드바 컴포넌트
+ * @param rankingData 순위 데이터 (메인화면 좌측 순위 캐러셀에 사용)
+ * @param onCreateReview 리뷰 작성 버튼 클릭 시 호출되는 함수 (리뷰 작성 모달 오픈)
+ */
 export default function Sidebar({ rankingData, onCreateReview }: SidebarProps) {
   const navigate = useNavigate();
 

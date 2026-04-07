@@ -1,17 +1,21 @@
 import mainIcon from "@/assets/mainIcon.png";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import API from "@/services/api";
 import { useAuthStore } from "@/stores/useAuthStore";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
+/**
+ * 로그인 페이지 컴포넌트
+ */
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const login = useAuthStore((state) => state.login);
+  const login = useAuthStore((state) => state.login); // Zustand 스토어의 로그인 함수
 
+  // 로그인 처리 함수
   const handleLogin = async (e: React.SyntheticEvent) => {
     e.preventDefault();
 
@@ -39,7 +43,6 @@ export default function Login() {
   return (
     <div className='flex min-h-screen flex-col items-center justify-center bg-background px-4'>
       <div className='flex w-full flex-col items-center gap-10'>
-        {/* 로고 섹션 */}
         <div className='flex flex-col items-center gap-4'>
           <img
             src={mainIcon}
@@ -51,7 +54,6 @@ export default function Login() {
           </h1>
         </div>
 
-        {/* 폼 섹션 */}
         <form
           onSubmit={handleLogin}
           className='flex w-96 flex-col items-center gap-[12px]'

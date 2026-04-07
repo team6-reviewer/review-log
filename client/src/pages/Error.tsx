@@ -1,7 +1,10 @@
-import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { AlertCircle } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
+/**
+ * 잘못된 경로로 접근했을 때 보여지는 에러 페이지 컴포넌트
+ */
 export default function Error() {
   const navigate = useNavigate();
 

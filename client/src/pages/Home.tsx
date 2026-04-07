@@ -1,15 +1,20 @@
 import Header from "@/components/layout/Header";
-import Sidebar from "@/components/layout/Sidebar";
-import TagFilter from "@/components/layout/TagFilter";
 import RecommendSection from "@/components/layout/RecommendSection";
 import ReviewList from "@/components/layout/ReviewList";
-import ReviewModal from "@/components/review/ReviewModal"; // 🚀 모달 추가
-import { useState } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { getReviews } from "@/services/review";
-import { getRankings } from "@/services/ranking";
+import Sidebar from "@/components/layout/Sidebar";
+import TagFilter from "@/components/layout/TagFilter";
+import ReviewModal from "@/components/review/ReviewModal";
 import API from "@/services/api";
+import { getRankings } from "@/services/ranking";
+import { getReviews } from "@/services/review";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
 
+/**
+ * 메인 페이지 컴포넌트
+ * - Header, Sidebar, TagFilter, RecommendSection, ReviewList로 구성
+ * - 리뷰 작성/수정/조회 모달 관리
+ */
 export default function Home() {
   const queryClient = useQueryClient();
   const [page, setPage] = useState(1);
@@ -26,6 +31,7 @@ export default function Home() {
     reviewId?: number;
   }>({ isOpen: false, mode: "view" });
 
+  // 리뷰 목록 정렬, 필터링 초기화 핸들러
   const handleReset = () => {
     setPage(1);
     setSort("write_date_desc");
@@ -97,7 +103,6 @@ export default function Home() {
                 setPage(1);
               }}
             />
-            {/* 추후 추천 섹션 카드 클릭 시 상세조회 연결 예정 */}
             <RecommendSection
               onReviewClick={(id: number) =>
                 setModalConfig({ isOpen: true, mode: "view", reviewId: id })

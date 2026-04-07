@@ -1,12 +1,12 @@
-import { MoreHorizontal, Star } from "lucide-react";
+import defaultImg from "@/assets/defaultImg.png";
+import Tag from "@/components/Tag";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import Tag from "@/components/Tag";
-import defaultImg from "@/assets/defaultImg.png";
+import { MoreHorizontal, Star } from "lucide-react";
 
 interface ReviewCardProps {
   title: string;
@@ -21,6 +21,20 @@ interface ReviewCardProps {
   isSimple?: boolean;
 }
 
+/**
+ * 리뷰 카드 컴포넌트
+ * @param title 작품 제목
+ * @param posterUrl 포스터 이미지 URL
+ * @param date 작성일자
+ * @param rating 별점
+ * @param tags 태그 목록
+ * @param isMine 내가 쓴 글인지 여부
+ * @param onDelete 삭제 함수
+ * @param onEdit 수정 함수
+ * @param onClick 클릭 함수
+ * @param isSimple 간단한 모드 여부 (true면 태그 숨김, 카드 너비 축소)
+ * @returns
+ */
 export default function ReviewCard({
   title,
   posterUrl,
@@ -71,6 +85,7 @@ export default function ReviewCard({
     return stars;
   };
 
+  // isSimple이 true면 너비 200px, false면 240px
   const width = isSimple ? "w-[200px]" : "w-[240px]";
 
   return (

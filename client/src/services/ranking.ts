@@ -1,5 +1,10 @@
 import API from "@/services/api";
 
+/**
+ * 순위 데이터 (현재 상영작, 베스트셀러, 리뷰 많은 작품, 인기 태그) 를 서버에서 가져오는 함수
+ * @returns 각 카테고리별 순위 데이터를 포함하는 객체
+ * @throws API 요청 실패 시 에러
+ */
 export const getRankings = async () => {
   try {
     // 추후 추가 예정

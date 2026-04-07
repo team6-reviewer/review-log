@@ -1,12 +1,17 @@
 import Header from "@/components/layout/Header";
-import TagFilter from "@/components/layout/TagFilter";
 import ReviewList from "@/components/layout/ReviewList";
+import TagFilter from "@/components/layout/TagFilter";
 import ReviewModal from "@/components/review/ReviewModal";
-import { useState } from "react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getMyReviews } from "@/services/review";
 import API from "@/services/api";
+import { getMyReviews } from "@/services/review";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
 
+/**
+ * 마이페이지 컴포넌트
+ * - Header, TagFilter, ReviewList로 구성
+ * - 리뷰 수정/조회 모달 관리
+ */
 export default function Mypage() {
   const queryClient = useQueryClient();
   const [page, setPage] = useState(1);
@@ -27,6 +32,7 @@ export default function Mypage() {
     setSelectedTags([]);
   };
 
+  // 내 리뷰 목록 조회
   const { data: reviewData, isLoading } = useQuery({
     queryKey: ["myReviews", { page, sort, type, tags: selectedTags }],
     queryFn: () => getMyReviews({ page, sort, type, tags: selectedTags }),

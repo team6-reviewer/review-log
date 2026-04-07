@@ -1,6 +1,6 @@
-import { ChevronLeft, ChevronRight, RotateCcw } from "lucide-react";
 import ReviewCard from "@/components/ReviewCard";
 import { GENRE_TAGS } from "@/constants/tags";
+import { ChevronLeft, ChevronRight, RotateCcw } from "lucide-react";
 
 // 태그 이름으로부터 타입을 유추하는 헬퍼 함수
 const getTagType = (tagName: string): "genre" | "mood" => {
@@ -8,6 +8,48 @@ const getTagType = (tagName: string): "genre" | "mood" => {
   return isGenre ? "genre" : "mood";
 };
 
+interface Review {
+  id: number;
+  user_id: number;
+  title: string;
+  type: "movie" | "book";
+  score: number;
+  tags: string;
+  write_date: string;
+  content_image: string;
+  isMine?: boolean;
+}
+
+interface ReviewListProps {
+  reviews: Review[];
+  total: number;
+  isLoading: boolean;
+  page: number;
+  setPage: (page: number | ((prev: number) => number)) => void;
+  sort: string;
+  setSort: (sort: string) => void;
+  keyword: string;
+  onReset: () => void;
+  onReviewClick: (id: number) => void;
+  onEditClick: (id: number) => void;
+  onDeleteClick: (id: number) => void;
+}
+
+/**
+ * 리뷰 목록 컴포넌트
+ * @param reviews 리뷰 데이터 배열
+ * @param total 전체 리뷰 개수
+ * @param isLoading 로딩 상태
+ * @param page 현재 페이지 번호
+ * @param setPage 페이지 번호 업데이트 함수
+ * @param sort 정렬 기준
+ * @param setSort 정렬 기준 업데이트 함수
+ * @param keyword 검색어
+ * @param onReset 초기화 핸들러 함수
+ * @param onReviewClick 리뷰 카드 클릭 핸들러 함수 (리뷰 상세 조회 모달 오픈)
+ * @param onEditClick 리뷰 수정 클릭 핸들러 함수 (리뷰 수정 모달 오픈)
+ * @param onDeleteClick 리뷰 삭제 클릭 핸들러 함수 (리뷰 삭제 API 호출)
+ */
 export default function ReviewList({
   reviews,
   total,
@@ -21,7 +63,7 @@ export default function ReviewList({
   onReviewClick,
   onEditClick,
   onDeleteClick,
-}: any) {
+}: ReviewListProps) {
   return (
     <section className='flex flex-col gap-6 mt-12'>
       <div className='flex justify-between items-center'>
@@ -88,7 +130,7 @@ export default function ReviewList({
         className='grid gap-6 items-start'
         style={{ gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))" }}
       >
-        {reviews.map((review: any) => {
+        {reviews.map((review: Review) => {
           const tagNames = review.tags ? review.tags.split(", ") : [];
           const refinedTags = [
             {
@@ -106,7 +148,7 @@ export default function ReviewList({
               key={review.id}
               title={review.title}
               posterUrl={review.content_image}
-              date={review.watch_date.split("T")[0]}
+              date={review.write_date.split("T")[0]}
               rating={review.score}
               tags={refinedTags}
               isMine={review.isMine !== undefined ? review.isMine : true}

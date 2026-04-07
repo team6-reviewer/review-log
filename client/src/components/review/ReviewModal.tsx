@@ -8,12 +8,18 @@ interface ReviewModalProps {
   onClose: () => void;
 }
 
+/**
+ * 리뷰 작성/수정/조회 모달 컴포넌트
+ * @param mode 모달 모드 ("create": 작성, "edit": 수정, "view": 조회)
+ * @param reviewId 수정/조회할 리뷰 ID (작성 모드에서는 필요 없음)
+ * @param onClose 모달 닫기 함수
+ */
 export default function ReviewModal({
   mode,
   reviewId,
   onClose,
 }: ReviewModalProps) {
-  // 작성 모드일 때만 검색부터 시작, 나머지는 바로 작성/조회
+  // 작성 모드일 때만 검색(1)부터 시작, 나머지는 바로 작성/조회(2)
   const [step, setStep] = useState(mode === "create" ? 1 : 2);
   const [selectedWork, setSelectedWork] = useState<any>(null);
 
@@ -32,6 +38,7 @@ export default function ReviewModal({
     // 스크롤바가 사라진 만큼 여백을 채워서 UI 움직임 방지
     document.body.style.paddingRight = `${scrollbarWidth}px`;
 
+    // 모달 닫히면 원상복구
     return () => {
       document.body.style.overflow = "auto";
       document.body.style.paddingRight = "0px";
@@ -56,7 +63,7 @@ export default function ReviewModal({
           <WriteStep
             mode={mode}
             reviewId={reviewId}
-            selectedWork={selectedWork} // 검색에서 선택한 데이터 전달
+            selectedWork={selectedWork} // 작품 검색(SearchStep)에서 선택한 데이터 전달
             onBack={() => setStep(1)}
             onClose={onClose}
           />

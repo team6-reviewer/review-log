@@ -1,14 +1,19 @@
-import { useRef, useState } from "react";
-import ReviewCard from "@/components/ReviewCard";
 import defaultImg from "@/assets/defaultImg.png";
-import { useQuery } from "@tanstack/react-query";
+import ReviewCard from "@/components/ReviewCard";
 import { getRecommendedReviews } from "@/services/review";
+import { useQuery } from "@tanstack/react-query";
+import { useRef, useState } from "react";
 
+/**
+ * 태그 기반 리뷰 추천 섹션 컴포넌트
+ * @param onReviewClick 리뷰 카드 클릭 시 호출되는 콜백 함수 (리뷰 상세 조회 모달 오픈)
+ */
 export default function RecommendSection({
   onReviewClick,
 }: {
   onReviewClick: (id: number) => void;
 }) {
+  // 마우스 드래그 스크롤 관련 상태 관리
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isDrag, setIsDrag] = useState(false);
   const [startX, setStartX] = useState(0);
@@ -30,6 +35,7 @@ export default function RecommendSection({
     setIsDrag(false);
   };
 
+  // 드래그 중일 때 마우스 이동에 따라 스크롤 위치 업데이트
   const onDragMove = (e: React.MouseEvent) => {
     if (!isDrag || !scrollRef.current) return;
     scrollRef.current.scrollLeft = startX - e.pageX;
@@ -54,7 +60,7 @@ export default function RecommendSection({
         onMouseMove={onDragMove}
         onMouseUp={onDragEnd}
         onMouseLeave={onDragEnd}
-        className={`flex flex-row justify-end flex-nowrap gap-4 w-full overflow-x-auto px-1 pb-1 scrollbar-hide ${
+        className={`flex flex-row lg:justify-end justify-center flex-nowrap gap-4 w-full overflow-x-auto px-1 pb-1 scrollbar-hide ${
           isDrag ? "cursor-grabbing" : "cursor-grab"
         } active:cursor-grabbing transition-all`}
       >

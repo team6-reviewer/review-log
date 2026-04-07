@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import API from "@/services/api";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
+/**
+ * 회원가입 페이지 컴포넌트
+ */
 export default function Join() {
   const navigate = useNavigate();
 
@@ -75,11 +78,13 @@ export default function Join() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  // 입력 필드에서 포커스가 벗어났을 때 해당 필드를 touched 상태로 업데이트
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     const { name } = e.target;
     setTouched((prev) => ({ ...prev, [name]: true }));
   };
 
+  // 회원가입 처리 함수
   const handleJoin = async (e: React.SyntheticEvent) => {
     e.preventDefault();
 

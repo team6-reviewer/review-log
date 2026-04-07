@@ -4,6 +4,9 @@ export interface TagItem {
   type: "genre" | "mood";
 }
 
+/**
+ * 장르 태그 상수 배열
+ */
 export const GENRE_TAGS: TagItem[] = [
   { id: 1, tagname: "SF", type: "genre" },
   { id: 2, tagname: "로맨스", type: "genre" },
@@ -24,6 +27,9 @@ export const GENRE_TAGS: TagItem[] = [
   { id: 17, tagname: "애니메이션", type: "genre" },
 ];
 
+/**
+ * 분위기 태그 상수 배열
+ */
 export const MOOD_TAGS: TagItem[] = [
   { id: 18, tagname: "잔잔한", type: "mood" },
   { id: 19, tagname: "몽환적인", type: "mood" },

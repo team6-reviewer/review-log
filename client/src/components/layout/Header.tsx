@@ -1,13 +1,13 @@
-import { useState, useEffect } from "react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import mainIcon from "@/assets/mainIcon.png";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { useNavigate } from "react-router-dom";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import API from "@/services/api";
-import { ChevronLeft, User } from "lucide-react";
 import { useAuthStore } from "@/stores/useAuthStore";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { ChevronLeft, User } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface HeaderProps {
   activeTab: string;
@@ -17,6 +17,14 @@ interface HeaderProps {
   isMyPage?: boolean;
 }
 
+/**
+ * 헤더 컴포넌트
+ * @param activeTab 현재 활성화된 탭 ("전체", "영화", "도서")
+ * @param keyword 검색어
+ * @param onTabChange 탭 변경 핸들러 함수
+ * @param onSearch 검색 핸들러 함수
+ * @param isMyPage 마이페이지 여부 (기본값: false)
+ */
 export default function Header({
   activeTab,
   keyword,
@@ -24,13 +32,14 @@ export default function Header({
   onSearch,
   isMyPage = false,
 }: HeaderProps) {
-  const [searchType, setSearchType] = useState("total");
-  const [searchKeyword, setSearchKeyword] = useState("");
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const logout = useAuthStore((state) => state.logout);
+
+  const [searchType, setSearchType] = useState("total");
+  const [searchKeyword, setSearchKeyword] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [editNickname, setEditNickname] = useState("");
-  const logout = useAuthStore((state) => state.logout);
 
   // 외부에서 keyword가 비워지면 내부 인풋도 비워줌
   useEffect(() => {
@@ -38,7 +47,7 @@ export default function Header({
     if (keyword === "") setSearchType("total");
   }, [keyword]);
 
-  // 마이페이지일 때만 내 정보 조회 (캐시 공유용)
+  // 마이페이지일 때만 내 정보 조회 (캐시 공유)
   const { data: userData } = useQuery({
     queryKey: ["me"],
     queryFn: () => API.get("/auth/me").then((res) => res.data),
@@ -67,6 +76,7 @@ export default function Header({
     },
   });
 
+  // 로그아웃 핸들러 함수
   const handleLogout = () => {
     if (window.confirm("로그아웃 하시겠습니까?")) {
       logoutMutation.mutate();
@@ -78,6 +88,7 @@ export default function Header({
       <div className='max-w-[1440px] mx-auto p-8 h-[120px] flex items-center justify-between gap-2'>
         <div className='flex items-center gap-3'>
           {isMyPage && !isEditing && (
+            // 홈 이동 버튼 (마이페이지에서만 보임)
             <button
               onClick={() => navigate("/")}
               className='p-1 group'
@@ -93,7 +104,7 @@ export default function Header({
           {isMyPage ? (
             <>
               {isEditing ? (
-                /* 수정 모드: 닉네임이 input으로 바뀜 */
+                /* 닉네임 수정 모드: 닉네임이 input으로 바뀜 */
                 <div className='flex items-center gap-2'>
                   <Input
                     value={editNickname}
@@ -134,15 +145,16 @@ export default function Header({
               )}
             </>
           ) : (
+            // 메인 화면에서는 닉네임 없이 로고와 타이틀만 보임
             <h1 className='text-[36px] font-bold text-main-gray tracking-tight'>
               Review—Log
             </h1>
           )}
         </div>
 
+        {/* 네비게이션 (전체탭, 영화탭, 도서탭) */}
         <nav className='relative flex items-center mb-[-2px]'>
           <div className='absolute bottom-0 left-[-20px] right-[-20px] h-[1px] bg-light-gray' />
-
           <div className='flex gap-16 relative'>
             {["전체", "영화", "도서"].map((tab) => (
               <button
@@ -164,6 +176,7 @@ export default function Header({
 
         <div className='flex flex-col gap-2'>
           {isMyPage ? (
+            // 마이페이지에서는 로그아웃 및 회원탈퇴 버튼
             <>
               <Button
                 variant='secondary'
@@ -181,6 +194,7 @@ export default function Header({
               </button>
             </>
           ) : (
+            // 메인 화면에서는 검색창
             <>
               <form
                 onSubmit={(e) => {

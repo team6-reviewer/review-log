@@ -17,7 +17,17 @@ interface GetMyReviewsParams {
   tags: string[];
 }
 
-// 리뷰 목록 조회
+/**
+ * 리뷰 목록 조회 함수
+ * @param page 페이지 번호
+ * @param sort 정렬 기준 ("write_date_desc", "watch_date_desc", "score_desc")
+ * @param type 리뷰 타입 ("전체", "영화", "도서")
+ * @param keyword 검색어
+ * @param searchType 검색 타입 ("total", "title", "content")
+ * @param tags 선택된 태그 배열
+ * @returns 리뷰 목록 데이터
+ * @throws API 요청 실패 시 에러
+ */
 export const getReviews = async ({
   page,
   sort,
@@ -49,7 +59,15 @@ export const getReviews = async ({
   return data;
 };
 
-// 내 리뷰 목록 조회
+/**
+ * 내 리뷰 목록 조회 함수
+ * @param page 페이지 번호
+ * @param sort 정렬 기준 ("write_date_desc", "watch_date_desc", "score_desc")
+ * @param type 리뷰 타입 ("전체", "영화", "도서")
+ * @param tags 선택된 태그 배열
+ * @returns 내 리뷰 목록 데이터
+ * @throws API 요청 실패 시 에러
+ */
 export const getMyReviews = async ({
   page,
   sort,
@@ -69,7 +87,12 @@ export const getMyReviews = async ({
   return data;
 };
 
-// 태그 기반 리뷰 추천 목록 조회
+/**
+ * 태그 기반 리뷰 추천 함수
+ * @param limit 추천 리뷰 수 (기본값: 3)
+ * @returns 추천 리뷰 목록 데이터
+ * @throws API 요청 실패 시 에러
+ */
 export const getRecommendedReviews = async (limit: number = 3) => {
   const { data } = await API.get("/reviews/recommendations", {
     params: { limit },

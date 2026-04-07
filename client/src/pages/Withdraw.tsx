@@ -1,9 +1,12 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import API from "@/services/api";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
+/**
+ * 회원탈퇴 확인 페이지 컴포넌트
+ */
 export default function Withdraw() {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);

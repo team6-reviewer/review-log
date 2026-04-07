@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 
 const tagStyles = {
   type: {
-    // 영화/도서 태그는 항상 이 스타일로만 고정
+    // 영화/도서 태그는 항상 unselected
     unselected:
       "bg-tag-blue-bg text-tag-blue-text border-tag-blue-text cursor-default",
     selected: "bg-tag-blue-text text-tag-blue-bg border-tag-blue-text", // 실제론 안 쓰임
@@ -24,6 +24,14 @@ interface TagProps {
   onClick?: () => void;
 }
 
+/**
+ * 태그 컴포넌트
+ * @param label 태그 이름
+ * @param type 태그 종류 (type: 영화/도서, genre: 장르, mood: 분위기)
+ * @param isSelected 선택 여부 (type 태그는 항상 false로 고정)
+ * @param onClick 클릭 핸들러
+ * @returns
+ */
 export default function Tag({
   label,
   type,

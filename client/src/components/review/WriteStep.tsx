@@ -1,24 +1,48 @@
-import { useState, useEffect } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Star } from "lucide-react";
+import defaultImg from "@/assets/defaultImg.png";
 import Tag from "@/components/Tag";
 import { Button } from "@/components/ui/button";
+import { GENRE_TAGS, MOOD_TAGS } from "@/constants/tags";
 import { cn } from "@/lib/utils";
 import API from "@/services/api";
-import { GENRE_TAGS, MOOD_TAGS } from "@/constants/tags";
 import { useAuthStore } from "@/stores/useAuthStore";
-import defaultImg from "@/assets/defaultImg.png";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Star } from "lucide-react";
+import { useEffect, useState } from "react";
 
+interface WriteStepProps {
+  mode: "create" | "edit" | "view";
+  reviewId?: number;
+  selectedWork?: {
+    title: string;
+    posterPath: string;
+    contentType: "movie" | "book";
+  }; // SearchStep에서 선택한 작품 데이터 (작성 모드일 때만 존재)
+  onBack: () => void;
+  onClose: () => void;
+}
+
+/**
+ * 리뷰 작성/수정/조회 단계 컴포넌트
+ * - 작성 모드: SearchStep에서 작품 선택 후 WriteStep으로 넘어와서 작성
+ * - 수정 모드: 기존 리뷰 데이터 불러와서 수정
+ * - 조회 모드: 기존 리뷰 데이터 불러와서 조회 (수정/삭제는 본인 리뷰일 때만 가능)
+ * @param mode 현재 모드 ("create": 작성, "edit": 수정, "view": 조회)
+ * @param reviewId 수정/조회할 리뷰 ID (작성 모드에서는 필요 없음)
+ * @param selectedWork SearchStep에서 선택한 작품 데이터 (작성 모드일 때만 존재)
+ * @param onBack 작성 모드에서 SearchStep로 돌아가기 위한 함수
+ * @param onClose 모달 닫기 함수
+ * @returns
+ */
 export default function WriteStep({
   mode,
   reviewId,
   selectedWork,
   onBack,
   onClose,
-}: any) {
-  const queryClient = useQueryClient();
+}: WriteStepProps) {
+  const queryClient = useQueryClient(); // React Query 쿼리 클라이언트 객체
   const [currentMode, setCurrentMode] = useState(mode);
-  const loginUserId = useAuthStore((state) => state.userId);
+  const loginUserId = useAuthStore((state) => state.userId); // 로그인한 사용자 ID (리뷰 조회 시 본인 리뷰 여부 판단)
 
   const today = new Date().toISOString().split("T")[0]; // yyyy-MM-dd 형식 오늘 날짜
 
@@ -147,7 +171,7 @@ export default function WriteStep({
   // 삭제 핸들러 함수
   const handleDelete = () => {
     if (window.confirm("정말 삭제하시겠습니까?")) {
-      deleteMutation.mutate(reviewId);
+      deleteMutation.mutate(reviewId as number);
     }
   };
   return (
@@ -170,7 +194,7 @@ export default function WriteStep({
             {formData.title}
           </h2>
 
-          {/* 날짜/별점/태그 리스트 (작성/수정 모드 UI) */}
+          {/* 날짜 */}
           <div className='flex flex-col gap-6'>
             <div className='flex flex-col gap-1'>
               <div className='flex items-center gap-2'>
@@ -204,6 +228,7 @@ export default function WriteStep({
               )}
             </div>
 
+            {/* 별점 */}
             <div className='flex flex-col gap-1'>
               <div className='flex items-center gap-3'>
                 <div className='flex'>
@@ -251,6 +276,7 @@ export default function WriteStep({
               </div>
             </div>
 
+            {/* 태그 */}
             <div className='flex flex-col gap-4'>
               <span>
                 <Tag
@@ -333,6 +359,7 @@ export default function WriteStep({
         </div>
       </div>
 
+      {/* 감상평 */}
       <div className='flex flex-col gap-2 w-full'>
         <textarea
           readOnly={isView}
@@ -368,6 +395,7 @@ export default function WriteStep({
         )}
       </div>
 
+      {/* 하단 버튼 */}
       <div className='flex justify-center'>
         <div className='flex justify-between gap-4'>
           {isView ? (
