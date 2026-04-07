@@ -17,6 +17,7 @@ export default function RecommendSection({
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isDrag, setIsDrag] = useState(false);
   const [startX, setStartX] = useState(0);
+  const [mouseDownX, setMouseDownX] = useState(0); // 누른 시점의 X 좌표
 
   // 태그 기반 리뷰 추천 목록 조회
   const { data, isLoading } = useQuery({
@@ -29,6 +30,7 @@ export default function RecommendSection({
     e.preventDefault();
     setIsDrag(true);
     setStartX(e.pageX + (scrollRef.current?.scrollLeft || 0));
+    setMouseDownX(e.pageX);
   };
 
   const onDragEnd = () => {
@@ -39,6 +41,17 @@ export default function RecommendSection({
   const onDragMove = (e: React.MouseEvent) => {
     if (!isDrag || !scrollRef.current) return;
     scrollRef.current.scrollLeft = startX - e.pageX;
+  };
+
+  // 드래그인지 클릭인지 구분하여 클릭 이벤트 처리
+  const handleReviewClick = (e: React.MouseEvent, id: number) => {
+    // 마우스를 뗀 시점과 누른 시점의 차이 계산
+    const dragDistance = Math.abs(e.pageX - mouseDownX);
+
+    // 5px 이상 : 드래그, 5px 미만 : 클릭으로 간주 -> 상세 조회 모달 오픈
+    if (dragDistance < 5) {
+      onReviewClick(id);
+    }
   };
 
   // 로딩 중일 때 보여줄 스켈레톤 UI
@@ -90,7 +103,7 @@ export default function RecommendSection({
         onMouseMove={onDragMove}
         onMouseUp={onDragEnd}
         onMouseLeave={onDragEnd}
-        className={`flex flex-row lg:justify-end justify-center flex-nowrap gap-4 w-full overflow-x-auto px-1 pb-1 scrollbar-hide ${
+        className={`flex flex-row flex-nowrap gap-4 w-full overflow-x-auto px-1 pb-1 scrollbar-hide ${
           isDrag ? "cursor-grabbing" : "cursor-grab"
         } active:cursor-grabbing transition-all`}
       >
@@ -117,7 +130,9 @@ export default function RecommendSection({
                   date={review.write_date.split("T")[0]}
                   rating={Number(review.score)}
                   isSimple={true}
-                  onClick={() => onReviewClick(review.id)}
+                  onClick={(e: React.MouseEvent<HTMLDivElement>) =>
+                    handleReviewClick(e, review.id)
+                  }
                 />
               </div>
             </div>

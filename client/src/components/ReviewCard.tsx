@@ -17,7 +17,7 @@ interface ReviewCardProps {
   isMine?: boolean; // 내가 쓴 글인지 여부 추가
   onDelete?: (e: React.MouseEvent) => void; // 이벤트 전파 방지를 위해 e 추가
   onEdit?: (e: React.MouseEvent) => void;
-  onClick?: () => void;
+  onClick?: (() => void) | ((e: React.MouseEvent<HTMLDivElement>) => void); // 함수 또는 이벤트 포함 함수 허용
   isSimple?: boolean;
 }
 
@@ -131,6 +131,7 @@ export default function ReviewCard({
             // 데이터는 있는데 URL이 깨졌거나 이미지 서버 에러일 때
             (e.currentTarget as HTMLImageElement).src = defaultImg;
           }}
+          draggable='false'
         />
       </div>
 

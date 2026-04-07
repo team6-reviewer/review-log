@@ -61,6 +61,7 @@ export default function WriteStep({
   // 에러 여부 초기화
   const [errors, setErrors] = useState({
     watch_date: false,
+    score: false,
     tags: false,
     content: false,
   });
@@ -144,6 +145,7 @@ export default function WriteStep({
       watch_date: !formData.watch_date || formData.watch_date > today,
       tags: formData.tags.length === 0,
       content: !formData.content.trim(),
+      score: formData.score === 0.0,
     };
     setErrors(newErrors);
     if (Object.values(newErrors).some((v) => v)) return;
@@ -209,7 +211,7 @@ export default function WriteStep({
           <div className='flex flex-col gap-6'>
             <div className='flex flex-col gap-1'>
               <div className='flex items-center gap-2'>
-                <span className='text-[14px] text-dark-gray'>관람일자</span>
+                <span className='text-[14px] text-dark-gray'>감상일자</span>
                 {isView ? (
                   <span>{formData.watch_date}</span>
                 ) : (
@@ -234,7 +236,7 @@ export default function WriteStep({
               )}
               {!isView && !!errors.watch_date && (
                 <p className='text-[14px] text-destructive'>
-                  관람일자를 올바르게 입력해 주세요.
+                  감상일자를 올바르게 입력해 주세요.
                 </p>
               )}
             </div>
@@ -285,6 +287,11 @@ export default function WriteStep({
                   / 5.0
                 </span>
               </div>
+              {!isView && !!errors.score && (
+                <p className='text-[14px] text-destructive'>
+                  별점을 입력해 주세요.
+                </p>
+              )}
             </div>
 
             {/* 태그 */}

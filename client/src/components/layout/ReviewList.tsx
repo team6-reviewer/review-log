@@ -163,7 +163,7 @@ export default function ReviewList({
           >
             <option value='write_date_desc'>작성일자순</option>
             <option value='score_desc'>별점순</option>
-            <option value='watch_date_desc'>관람일자순</option>
+            <option value='watch_date_desc'>감상일자순</option>
           </select>
         </div>
       </div>
