@@ -13,8 +13,15 @@ import { useCallback, useEffect, useState } from "react";
 /**
  * 순위 캐러셀 섹션 컴포넌트
  * @param data 순위 데이터 객체 (현재 상영작, 베스트셀러, 리뷰 많은 작품, 인기 태그)
+ * @param isLoading 로딩 상태
  */
-export default function CarouselSection({ data }: { data: RankingData }) {
+export default function CarouselSection({
+  data,
+  isLoading,
+}: {
+  data: RankingData;
+  isLoading: boolean;
+}) {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
 
@@ -66,6 +73,39 @@ export default function CarouselSection({ data }: { data: RankingData }) {
 
   // 현재 슬라이드에 따른 배경 클래스
   const currentBg = slides[current].bg;
+
+  // 로딩 중일 때 보여줄 스켈레톤
+  if (isLoading) {
+    return (
+      <div className='w-full h-full max-w-[360px] aspect-[4/5.2] relative mx-auto rounded-lg shadow-sm overflow-hidden bg-gray-200 animate-pulse'>
+        <div className='h-full p-[5%] flex flex-col gap-6'>
+          {/* 타이틀 스켈레톤 */}
+          <div className='mt-4 h-9 w-2/3 bg-gray-300 rounded-md' />
+
+          {/* 리스트 아이템 스켈레톤 (5개) */}
+          <div className='flex flex-col gap-4 mt-2'>
+            {[...Array(5)].map((_, i) => (
+              <div key={i} className='flex items-center gap-3'>
+                {/* 순위 숫자 자리 */}
+                <div className='w-6 h-8 bg-gray-300 rounded' />
+                {/* 포스터/태그 이미지 자리 */}
+                <div className='w-12 aspect-[3/4] bg-gray-300 rounded-md shrink-0' />
+                {/* 텍스트 자리 */}
+                <div className='h-4 bg-gray-300 rounded flex-1' />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* 하단 도트( 스켈레톤 */}
+        <div className='absolute bottom-4 left-0 w-full flex justify-center gap-2'>
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className='w-2 h-2 rounded-full bg-gray-300' />
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className='w-full h-full max-w-[360px] aspect-[4/5.2] relative mx-auto rounded-lg shadow-sm overflow-hidden'>

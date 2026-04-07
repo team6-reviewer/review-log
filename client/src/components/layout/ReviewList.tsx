@@ -64,6 +64,49 @@ export default function ReviewList({
   onEditClick,
   onDeleteClick,
 }: ReviewListProps) {
+  // 로딩 중일 때 보여줄 스켈레톤 UI
+  if (isLoading) {
+    return (
+      <section className='flex flex-col gap-6 mt-12'>
+        {/* 상단 헤더 부분 스켈레톤 */}
+        <div className='flex justify-between items-center animate-pulse'>
+          <div className='h-8 w-48 bg-gray-200 rounded-md' />
+          <div className='h-10 w-32 bg-gray-200 rounded-lg' />
+        </div>
+
+        {/* 카드 목록 그리드 스켈레톤 */}
+        <div
+          className='grid gap-6 items-start'
+          style={{
+            gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))",
+          }}
+        >
+          {[...Array(8)].map((_, i) => (
+            <div
+              key={i}
+              className='flex flex-col gap-4 p-4 rounded-xl border border-gray-100 bg-white shadow-sm animate-pulse'
+            >
+              {/* 포스터 영역 */}
+              <div className='w-full aspect-[3/4] bg-gray-200 rounded-lg' />
+              {/* 타이틀 영역 */}
+              <div className='h-5 bg-gray-200 rounded w-3/4' />
+              {/* 날짜/평점 영역 */}
+              <div className='flex justify-between'>
+                <div className='h-4 bg-gray-100 rounded w-1/3' />
+                <div className='h-4 bg-gray-100 rounded w-1/4' />
+              </div>
+              {/* 태그 영역 */}
+              <div className='flex gap-2'>
+                <div className='h-6 bg-gray-50 rounded-full w-12' />
+                <div className='h-6 bg-gray-50 rounded-full w-16' />
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className='flex flex-col gap-6 mt-12'>
       <div className='flex justify-between items-center'>
@@ -126,45 +169,55 @@ export default function ReviewList({
       </div>
 
       {/* 리뷰 카드 목록 */}
-      <div
-        className='grid gap-6 items-start'
-        style={{ gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))" }}
-      >
-        {reviews.map((review: Review) => {
-          const tagNames = review.tags ? review.tags.split(", ") : [];
-          const refinedTags = [
-            {
-              name: review.type === "movie" ? "영화" : "도서",
-              type: "type" as const,
-            },
-            ...tagNames.map((name: string) => ({
-              name,
-              type: getTagType(name),
-            })),
-          ];
+      {reviews.length === 0 ? (
+        <div>
+          <p className='text-center text-main-gray mt-20'>
+            작성된 리뷰가 없습니다.
+          </p>
+        </div>
+      ) : (
+        <div
+          className='grid gap-6 items-start'
+          style={{
+            gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))",
+          }}
+        >
+          {reviews.map((review: Review) => {
+            const tagNames = review.tags ? review.tags.split(", ") : [];
+            const refinedTags = [
+              {
+                name: review.type === "movie" ? "영화" : "도서",
+                type: "type" as const,
+              },
+              ...tagNames.map((name: string) => ({
+                name,
+                type: getTagType(name),
+              })),
+            ];
 
-          return (
-            <ReviewCard
-              key={review.id}
-              title={review.title}
-              posterUrl={review.content_image}
-              date={review.write_date.split("T")[0]}
-              rating={review.score}
-              tags={refinedTags}
-              isMine={review.isMine !== undefined ? review.isMine : true}
-              onClick={() => onReviewClick(review.id)} // 상세 조회 모달 오픈
-              onEdit={(e: any) => {
-                e.stopPropagation();
-                onEditClick(review.id);
-              }} // 수정 모달 오픈
-              onDelete={(e: any) => {
-                e.stopPropagation();
-                onDeleteClick(review.id);
-              }} // 삭제 API 호출
-            />
-          );
-        })}
-      </div>
+            return (
+              <ReviewCard
+                key={review.id}
+                title={review.title}
+                posterUrl={review.content_image}
+                date={review.write_date.split("T")[0]}
+                rating={review.score}
+                tags={refinedTags}
+                isMine={review.isMine !== undefined ? review.isMine : true}
+                onClick={() => onReviewClick(review.id)} // 상세 조회 모달 오픈
+                onEdit={(e: any) => {
+                  e.stopPropagation();
+                  onEditClick(review.id);
+                }} // 수정 모달 오픈
+                onDelete={(e: any) => {
+                  e.stopPropagation();
+                  onDeleteClick(review.id);
+                }} // 삭제 API 호출
+              />
+            );
+          })}
+        </div>
+      )}
     </section>
   );
 }

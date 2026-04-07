@@ -66,7 +66,7 @@ export default function SearchStep({ onNext, onClose }: SearchStepProps) {
             className='w-20'
             disabled={isLoading}
           >
-            {isLoading ? "..." : "검색"}
+            {isLoading ? "검색 중" : "검색"}
           </Button>
         </form>
 
@@ -114,7 +114,19 @@ export default function SearchStep({ onNext, onClose }: SearchStepProps) {
       </div>
 
       <div className='w-full flex-1 overflow-y-auto scrollbar-hide px-2 mb-10'>
-        {results.length > 0 ? (
+        {isLoading ? (
+          // 검색 중일 때 보여줄 스켈레톤 UI
+          <div className='grid grid-cols-5 gap-x-5 gap-y-10 animate-pulse'>
+            {[...Array(10)].map((_, i) => (
+              <div key={i} className='flex flex-col gap-3'>
+                <div className='aspect-[2/3] rounded-lg bg-gray-200' />
+                {/* 포스터 자리 */}
+                <div className='h-4 bg-gray-200 rounded w-full' />
+                {/* 타이틀 첫 줄 */}
+              </div>
+            ))}
+          </div>
+        ) : results.length > 0 ? (
           <div className='grid grid-cols-5 gap-x-5 gap-y-10'>
             {results.map((item) => (
               <div
@@ -136,7 +148,7 @@ export default function SearchStep({ onNext, onClose }: SearchStepProps) {
             ))}
           </div>
         ) : (
-          <div className='h-full flex items-center justify-center text-dark-gray font-medium'>
+          <div className='h-full flex items-center justify-center text-main-gray'>
             {keyword ? "검색 결과가 없습니다." : "작품을 검색해보세요!"}
           </div>
         )}

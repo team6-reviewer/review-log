@@ -52,7 +52,7 @@ export default function Home() {
   });
 
   // 순위 조회
-  const { data: rankingData } = useQuery({
+  const { data: rankingData, isLoading: isRankingLoading } = useQuery({
     queryKey: ["rankings"],
     queryFn: getRankings,
     refetchOnWindowFocus: false,
@@ -85,10 +85,18 @@ export default function Home() {
       <div className='max-w-[1400px] mx-auto px-6'>
         <div className='mt-10 flex flex-row gap-10 items-start'>
           <Sidebar
-            rankingData={rankingData}
+            rankingData={
+              rankingData || {
+                nowPlaying: [],
+                bestSellers: [],
+                mostReviewed: [],
+                popularTags: [],
+              }
+            }
             onCreateReview={() =>
               setModalConfig({ isOpen: true, mode: "create" })
             }
+            isLoading={isRankingLoading}
           />
 
           <div className='flex-[3_3_75%] min-w-0 flex flex-col gap-8 transition-all duration-300'>
