@@ -119,13 +119,13 @@ export default function CarouselSection({
           opts={{ loop: true }}
           className='w-full h-full'
         >
-          <CarouselContent className='h-full ml-0 flex items-stretch'>
+          <CarouselContent className='h-full ml-0 flex items-stretch cursor-grab'>
             {slides.map((slide, sIdx) => (
               <CarouselItem
                 key={sIdx}
-                className='h-full min-h-full pl-0 p-[5%] flex flex-col gap-2'
+                className='h-full min-h-full pl-0 p-[5%] pt-3 flex flex-col gap-2'
               >
-                <h2 className={"mt-2 text-[28px] font-bold text-white"}>
+                <h2 className={"text-[28px] font-bold text-white"}>
                   {slide.title}
                 </h2>
 
@@ -182,6 +182,7 @@ export default function CarouselSection({
                                     (e.currentTarget as HTMLImageElement).src =
                                       defaultImg;
                                   }}
+                                  draggable={false}
                                 />
                               </div>
                               <p className='flex-1 text-[14px] font-semibold text-white line-clamp-1 pr-2 leading-tight'>
