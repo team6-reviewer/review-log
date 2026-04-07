@@ -109,7 +109,18 @@ export default function WriteStep({
         : API.post("/reviews", data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["reviews"] });
-      onClose();
+      if (currentMode === "edit") {
+        // 수정 모드일 때는 상세 데이터를 다시 불러오고 조회 모드로 변경
+        queryClient.invalidateQueries({
+          queryKey: ["review", reviewId, loginUserId],
+        });
+        setCurrentMode("view");
+        alert("수정이 완료되었습니다.");
+      } else {
+        // 작성 모드일 때는 닫기
+        alert("리뷰가 등록되었습니다.");
+        onClose();
+      }
     },
     onError: (error: any) => {
       const serverMessage = error.response?.data?.message;
