@@ -109,7 +109,7 @@ export default function RecommendSection({
         } active:cursor-grabbing transition-all`}
       >
         {!data || data?.length === 0 || data?.recommendations?.length === 0 ? (
-          <div className='flex flex-col items-center lg:items-start gap-2 z-10 shrink-0 min-w-fit select-none text-dark-gray'>
+          <div className='w-full flex flex-col items-center lg:items-end gap-2 z-10 shrink-0 min-w-fit select-none text-dark-gray'>
             <span className=' text-[clamp(20px,3vw,32px)] font-bold leading-tight whitespace-nowrap'>
               당신과 취향이 같은 리뷰를 찾고 있어요.
             </span>
