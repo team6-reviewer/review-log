@@ -215,7 +215,7 @@ export default function Join() {
             <div className='flex justify-center gap-4 mt-4'>
               <Button
                 type='button'
-                onClick={() => navigate("/")}
+                onClick={() => navigate("/login")}
                 className='flex-1 border-main-gray bg-white text-main-gray hover:bg-light-gray'
               >
                 뒤로가기

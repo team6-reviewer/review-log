@@ -156,6 +156,7 @@ export default function WriteStep({
     const { posterPath, ...rest } = formData;
     mutation.mutate({
       ...rest,
+      watch_date: formData.watch_date.split("T")[0], // 날짜만 yyyy-MM-dd 형식으로 보내기
       content_image: posterPath,
       genre_tags: formData.tags.filter((t) =>
         GENRE_TAGS.some((g) => g.tagname === t),
