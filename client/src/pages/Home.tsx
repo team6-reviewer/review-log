@@ -68,88 +68,91 @@ export default function Home() {
   });
 
   return (
-    <div className='min-h-screen bg-background pb-20'>
-      <Header
-        activeTab={type}
-        keyword={keyword}
-        onTabChange={(t) => {
-          setType(t);
-          setPage(1);
-        }}
-        onSearch={(k, st) => {
-          setKeyword(k);
-          setSearchType(st);
-          setPage(1);
-        }}
-      />
-      <div className='max-w-[1400px] mx-auto px-6'>
-        <div className='mt-10 flex flex-row gap-10 items-start'>
-          <Sidebar
-            rankingData={
-              rankingData || {
-                nowPlaying: [],
-                bestSellers: [],
-                mostReviewed: [],
-                popularTags: [],
-              }
-            }
-            onCreateReview={() =>
-              setModalConfig({ isOpen: true, mode: "create" })
-            }
-            isLoading={isRankingLoading}
-          />
-
-          <div className='flex-[3_3_75%] min-w-0 flex flex-col gap-8 transition-all duration-300'>
-            <TagFilter
-              selectedTags={selectedTags}
-              onTagClick={(tagname) => {
-                setSelectedTags((prev) =>
-                  prev.includes(tagname)
-                    ? prev.filter((t) => t !== tagname)
-                    : [...prev, tagname],
-                );
-                setPage(1);
-              }}
-            />
-            <RecommendSection
-              onReviewClick={(id: number) =>
-                setModalConfig({ isOpen: true, mode: "view", reviewId: id })
-              }
-            />
-          </div>
-        </div>
-
-        <ReviewList
-          reviews={data?.data || []}
-          total={data?.total || 0}
-          isLoading={isLoading}
-          page={page}
-          setPage={setPage}
-          sort={sort}
-          setSort={setSort}
+    <>
+      <title>홈 - Review Log</title>
+      <div className='min-h-screen bg-background pb-20'>
+        <Header
+          activeTab={type}
           keyword={keyword}
-          onReset={handleReset}
-          onReviewClick={(id: number) =>
-            setModalConfig({ isOpen: true, mode: "view", reviewId: id })
-          }
-          onEditClick={(id: number) =>
-            setModalConfig({ isOpen: true, mode: "edit", reviewId: id })
-          }
-          onDeleteClick={(id: number) => {
-            if (window.confirm("정말 삭제하시겠습니까?"))
-              deleteMutation.mutate(id);
+          onTabChange={(t) => {
+            setType(t);
+            setPage(1);
+          }}
+          onSearch={(k, st) => {
+            setKeyword(k);
+            setSearchType(st);
+            setPage(1);
           }}
         />
-      </div>
+        <div className='max-w-[1400px] mx-auto px-6'>
+          <div className='mt-10 flex flex-row gap-10 items-start'>
+            <Sidebar
+              rankingData={
+                rankingData || {
+                  nowPlaying: [],
+                  bestSellers: [],
+                  mostReviewed: [],
+                  popularTags: [],
+                }
+              }
+              onCreateReview={() =>
+                setModalConfig({ isOpen: true, mode: "create" })
+              }
+              isLoading={isRankingLoading}
+            />
 
-      {/* 전역 리뷰 모달 */}
-      {modalConfig.isOpen && (
-        <ReviewModal
-          mode={modalConfig.mode}
-          reviewId={modalConfig.reviewId}
-          onClose={() => setModalConfig({ ...modalConfig, isOpen: false })}
-        />
-      )}
-    </div>
+            <div className='flex-[3_3_75%] min-w-0 flex flex-col gap-8 transition-all duration-300'>
+              <TagFilter
+                selectedTags={selectedTags}
+                onTagClick={(tagname) => {
+                  setSelectedTags((prev) =>
+                    prev.includes(tagname)
+                      ? prev.filter((t) => t !== tagname)
+                      : [...prev, tagname],
+                  );
+                  setPage(1);
+                }}
+              />
+              <RecommendSection
+                onReviewClick={(id: number) =>
+                  setModalConfig({ isOpen: true, mode: "view", reviewId: id })
+                }
+              />
+            </div>
+          </div>
+
+          <ReviewList
+            reviews={data?.data || []}
+            total={data?.total || 0}
+            isLoading={isLoading}
+            page={page}
+            setPage={setPage}
+            sort={sort}
+            setSort={setSort}
+            keyword={keyword}
+            onReset={handleReset}
+            onReviewClick={(id: number) =>
+              setModalConfig({ isOpen: true, mode: "view", reviewId: id })
+            }
+            onEditClick={(id: number) =>
+              setModalConfig({ isOpen: true, mode: "edit", reviewId: id })
+            }
+            onDeleteClick={(id: number) => {
+              if (window.confirm("정말 삭제하시겠습니까?"))
+                deleteMutation.mutate(id);
+            }}
+          />
+        </div>
+
+        {/* 전역 리뷰 모달 */}
+        {modalConfig.isOpen && (
+          <ReviewModal
+            mode={modalConfig.mode}
+            reviewId={modalConfig.reviewId}
+            onClose={() => setModalConfig({ ...modalConfig, isOpen: false })}
+          />
+        )}
+      </div>
+    </>
   );
 }

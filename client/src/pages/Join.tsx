@@ -124,106 +124,109 @@ export default function Join() {
   };
 
   return (
-    <div className='flex min-h-screen flex-col items-center justify-center bg-background px-4 py-10'>
-      <div className='flex w-full max-w-[400px] flex-col items-center gap-8'>
-        <h1 className='text-[2.5rem] font-bold text-main-gray'>회원가입</h1>
+    <>
+      <title>회원가입 - Review Log</title>
+      <div className='flex min-h-screen flex-col items-center justify-center bg-background px-4 py-10'>
+        <div className='flex w-full max-w-[400px] flex-col items-center gap-8'>
+          <h1 className='text-[2.5rem] font-bold text-main-gray'>회원가입</h1>
 
-        <form onSubmit={handleJoin} className='flex w-full flex-col gap-4'>
-          {/* 아이디 입력 */}
-          <div className='flex flex-col gap-2'>
-            <label className='text-sm font-medium text-main-gray ml-1'>
-              아이디
-            </label>
-            <Input
-              name='username'
-              placeholder='영문/숫자 5~20자'
-              value={formData.username}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              autoComplete='username'
-            />
-            {errors.username && (
-              <p className='text-[12px] text-destructive ml-1'>
-                {errors.username}
-              </p>
-            )}
-          </div>
+          <form onSubmit={handleJoin} className='flex w-full flex-col gap-4'>
+            {/* 아이디 입력 */}
+            <div className='flex flex-col gap-2'>
+              <label className='text-sm font-medium text-main-gray ml-1'>
+                아이디
+              </label>
+              <Input
+                name='username'
+                placeholder='영문/숫자 5~20자'
+                value={formData.username}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                autoComplete='username'
+              />
+              {errors.username && (
+                <p className='text-[12px] text-destructive ml-1'>
+                  {errors.username}
+                </p>
+              )}
+            </div>
 
-          {/* 비밀번호 입력 */}
-          <div className='flex flex-col gap-2'>
-            <label className='text-sm font-medium text-main-gray ml-1'>
-              비밀번호
-            </label>
-            <Input
-              name='password'
-              type='password'
-              placeholder='8자 이상'
-              value={formData.password}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              autoComplete='new-password'
-            />
-            {errors.password && (
-              <p className='text-[12px] text-destructive ml-1'>
-                {errors.password}
-              </p>
-            )}
-          </div>
+            {/* 비밀번호 입력 */}
+            <div className='flex flex-col gap-2'>
+              <label className='text-sm font-medium text-main-gray ml-1'>
+                비밀번호
+              </label>
+              <Input
+                name='password'
+                type='password'
+                placeholder='8자 이상'
+                value={formData.password}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                autoComplete='new-password'
+              />
+              {errors.password && (
+                <p className='text-[12px] text-destructive ml-1'>
+                  {errors.password}
+                </p>
+              )}
+            </div>
 
-          {/* 비밀번호 확인 */}
-          <div className='flex flex-col gap-2'>
-            <label className='text-sm font-medium text-main-gray ml-1'>
-              비밀번호 확인
-            </label>
-            <Input
-              name='passwordCheck'
-              type='password'
-              placeholder='8자 이상'
-              value={formData.passwordCheck}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              autoComplete='new-password'
-            />
-            {errors.passwordCheck && (
-              <p className='text-[12px] text-destructive ml-1'>
-                {errors.passwordCheck}
-              </p>
-            )}
-          </div>
+            {/* 비밀번호 확인 */}
+            <div className='flex flex-col gap-2'>
+              <label className='text-sm font-medium text-main-gray ml-1'>
+                비밀번호 확인
+              </label>
+              <Input
+                name='passwordCheck'
+                type='password'
+                placeholder='8자 이상'
+                value={formData.passwordCheck}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                autoComplete='new-password'
+              />
+              {errors.passwordCheck && (
+                <p className='text-[12px] text-destructive ml-1'>
+                  {errors.passwordCheck}
+                </p>
+              )}
+            </div>
 
-          {/* 닉네임 입력 */}
-          <div className='flex flex-col gap-2'>
-            <label className='text-sm font-medium text-main-gray ml-1'>
-              닉네임
-            </label>
-            <Input
-              name='nickname'
-              placeholder='2~20자'
-              value={formData.nickname}
-              onChange={handleChange}
-              onBlur={handleBlur}
-            />
-            {errors.nickname && (
-              <p className='text-[12px] text-destructive ml-1'>
-                {errors.nickname}
-              </p>
-            )}
-          </div>
+            {/* 닉네임 입력 */}
+            <div className='flex flex-col gap-2'>
+              <label className='text-sm font-medium text-main-gray ml-1'>
+                닉네임
+              </label>
+              <Input
+                name='nickname'
+                placeholder='2~20자'
+                value={formData.nickname}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+              {errors.nickname && (
+                <p className='text-[12px] text-destructive ml-1'>
+                  {errors.nickname}
+                </p>
+              )}
+            </div>
 
-          <div className='flex justify-center gap-4 mt-4'>
-            <Button
-              type='button'
-              onClick={() => navigate("/")}
-              className='flex-1 border-main-gray bg-white text-main-gray hover:bg-light-gray'
-            >
-              뒤로가기
-            </Button>
-            <Button type='submit' className='flex-1'>
-              시작하기
-            </Button>
-          </div>
-        </form>
+            <div className='flex justify-center gap-4 mt-4'>
+              <Button
+                type='button'
+                onClick={() => navigate("/")}
+                className='flex-1 border-main-gray bg-white text-main-gray hover:bg-light-gray'
+              >
+                뒤로가기
+              </Button>
+              <Button type='submit' className='flex-1'>
+                시작하기
+              </Button>
+            </div>
+          </form>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

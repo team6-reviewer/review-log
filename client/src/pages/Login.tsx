@@ -41,50 +41,53 @@ export default function Login() {
     }
   };
   return (
-    <div className='flex min-h-screen flex-col items-center justify-center bg-background px-4'>
-      <div className='flex w-full flex-col items-center gap-10'>
-        <div className='flex flex-col items-center gap-4'>
-          <img
-            src={mainIcon}
-            alt='Review-Log Logo'
-            className='w-24 h-24 object-contain'
-          />
-          <h1 className='text-[4rem] font-bold tracking-tight text-main-gray'>
-            Review—Log
-          </h1>
-        </div>
+    <>
+      <title>로그인 - Review Log</title>
+      <div className='flex min-h-screen flex-col items-center justify-center bg-background px-4'>
+        <div className='flex w-full flex-col items-center gap-10'>
+          <div className='flex flex-col items-center gap-4'>
+            <img
+              src={mainIcon}
+              alt='Review-Log Logo'
+              className='w-24 h-24 object-contain'
+            />
+            <h1 className='text-[4rem] font-bold tracking-tight text-main-gray'>
+              Review—Log
+            </h1>
+          </div>
 
-        <form
-          onSubmit={handleLogin}
-          className='flex w-96 flex-col items-center gap-[12px]'
-        >
-          <Input
-            type='text'
-            placeholder='아이디'
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            autoComplete='username'
-            className='text-center'
-          />
-          <Input
-            type='password'
-            placeholder='비밀번호'
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            autoComplete='current-password'
-            className='text-center'
-          />
-
-          <Button type='submit'>시작하기</Button>
-          {/* 하단 링크 */}
-          <Link
-            to='/join'
-            className='text-sm text-main-gray underline underline-offset-4 hover:text-black'
+          <form
+            onSubmit={handleLogin}
+            className='flex w-96 flex-col items-center gap-[12px]'
           >
-            회원가입
-          </Link>
-        </form>
+            <Input
+              type='text'
+              placeholder='아이디'
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              autoComplete='username'
+              className='text-center'
+            />
+            <Input
+              type='password'
+              placeholder='비밀번호'
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              autoComplete='current-password'
+              className='text-center'
+            />
+
+            <Button type='submit'>시작하기</Button>
+            {/* 하단 링크 */}
+            <Link
+              to='/join'
+              className='text-sm text-main-gray underline underline-offset-4 hover:text-black'
+            >
+              회원가입
+            </Link>
+          </form>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
