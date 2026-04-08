@@ -1,6 +1,7 @@
 import defaultImg from "@/assets/defaultImg.png";
 import ReviewCard from "@/components/ReviewCard";
 import { getRecommendedReviews } from "@/services/review";
+import { formatDate } from "@/utils/date";
 import { useQuery } from "@tanstack/react-query";
 import { useRef, useState } from "react";
 
@@ -127,7 +128,7 @@ export default function RecommendSection({
                 <ReviewCard
                   title={review.title}
                   posterUrl={review.content_image || defaultImg}
-                  date={review.write_date.split("T")[0]}
+                  date={formatDate(review.write_date)}
                   rating={Number(review.score)}
                   isSimple={true}
                   onClick={(e: React.MouseEvent<HTMLDivElement>) =>

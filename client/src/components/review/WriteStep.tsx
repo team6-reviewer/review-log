@@ -5,6 +5,7 @@ import { GENRE_TAGS, MOOD_TAGS } from "@/constants/tags";
 import { cn } from "@/lib/utils";
 import API from "@/services/api";
 import { useAuthStore } from "@/stores/useAuthStore";
+import { formatDate } from "@/utils/date";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Star } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -93,8 +94,8 @@ export default function WriteStep({
         title: detailData.title,
         score: Number(detailData.score),
         content: detailData.content,
-        write_date: detailData.write_date.split("T")[0],
-        watch_date: detailData.watch_date.split("T")[0],
+        write_date: detailData.write_date,
+        watch_date: detailData.watch_date,
         type: detailData.type,
         posterPath: detailData.content_image,
         tags: backendTags,
@@ -215,7 +216,7 @@ export default function WriteStep({
               <div className='flex items-center gap-2'>
                 <span className='text-[14px] text-dark-gray'>감상일자</span>
                 {isView ? (
-                  <span>{formData.watch_date}</span>
+                  <span>{formatDate(formData.watch_date)}</span>
                 ) : (
                   <input
                     type='date'
@@ -233,7 +234,7 @@ export default function WriteStep({
               {isView && (
                 <div className='flex items-center gap-2'>
                   <span className='text-[14px] text-dark-gray'>작성일자</span>
-                  <span>{formData.write_date}</span>
+                  <span>{formatDate(formData.write_date)}</span>
                 </div>
               )}
               {!isView && !!errors.watch_date && (

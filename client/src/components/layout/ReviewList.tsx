@@ -1,5 +1,6 @@
 import ReviewCard from "@/components/ReviewCard";
 import { GENRE_TAGS } from "@/constants/tags";
+import { formatDate } from "@/utils/date";
 import { ChevronLeft, ChevronRight, RotateCcw } from "lucide-react";
 
 // 태그 이름으로부터 타입을 유추하는 헬퍼 함수
@@ -202,7 +203,7 @@ export default function ReviewList({
                 key={review.id}
                 title={review.title}
                 posterUrl={review.content_image}
-                date={review.write_date.split("T")[0]}
+                date={formatDate(review.write_date)}
                 rating={review.score}
                 tags={refinedTags}
                 isMine={review.isMine !== undefined ? review.isMine : true}
