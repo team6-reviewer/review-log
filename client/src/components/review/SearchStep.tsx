@@ -19,6 +19,7 @@ export default function SearchStep({ onNext, onClose }: SearchStepProps) {
   const [keyword, setKeyword] = useState("");
   const [results, setResults] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isSearched, setIsSearched] = useState(false); // 검색 실행 여부 상태
 
   // 작품 검색 함수 (영화/도서 구분하여 API 호출)
   const handleSearch = async (e: React.SyntheticEvent) => {
@@ -33,6 +34,7 @@ export default function SearchStep({ onNext, onClose }: SearchStepProps) {
         params: { q: keyword },
       });
       setResults(data || []);
+      setIsSearched(true);
     } catch (error: any) {
       alert(error.response?.data?.message || "검색 중 오류가 발생했습니다.");
     } finally {
@@ -149,7 +151,7 @@ export default function SearchStep({ onNext, onClose }: SearchStepProps) {
           </div>
         ) : (
           <div className='h-full flex items-center justify-center text-main-gray'>
-            {keyword ? "검색 결과가 없습니다." : "작품을 검색해보세요!"}
+            {isSearched ? "검색 결과가 없습니다." : "작품을 검색해보세요!"}
           </div>
         )}
       </div>
