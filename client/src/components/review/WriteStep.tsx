@@ -112,7 +112,7 @@ export default function WriteStep({
     onSuccess: () => {
       // 리뷰 리스트, 마이페이지, 추천, 순위 데이터 등 무효화
       queryClient.invalidateQueries({ queryKey: ["reviews"] });
-      queryClient.invalidateQueries({ queryKey: ["ranking"] });
+      queryClient.invalidateQueries({ queryKey: ["rankings"] });
       if (currentMode === "edit") {
         // 수정 모드일 때는 상세 데이터를 다시 불러오고 조회 모드로 변경
         queryClient.invalidateQueries({
@@ -173,9 +173,13 @@ export default function WriteStep({
   const deleteMutation = useMutation({
     mutationFn: (id: number) => API.delete(`/reviews/${id}`),
     onSuccess: () => {
-      // 리스트 데이터 무효화 (홈, 마이페이지 등)
+      // 리뷰 리스트, 마이페이지, 추천, 순위 데이터 등 무효화
       queryClient.invalidateQueries({ queryKey: ["reviews"] });
-      queryClient.invalidateQueries({ queryKey: ["myReviews"] });
+      queryClient.invalidateQueries({ queryKey: ["rankings"] });
+      queryClient.invalidateQueries({
+        queryKey: ["myReviews"],
+        refetchType: "all",
+      });
       alert("리뷰가 삭제되었습니다.");
       onClose(); // 삭제 성공 시 모달 닫기
     },
