@@ -225,7 +225,7 @@ export default function WriteStep({
                   <input
                     type='date'
                     placeholder='yyyy-MM-dd'
-                    value={formData.watch_date}
+                    value={formatDate(formData.watch_date)}
                     max={today}
                     onChange={(e) => {
                       setFormData({ ...formData, watch_date: e.target.value });
