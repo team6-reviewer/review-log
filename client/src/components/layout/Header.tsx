@@ -130,7 +130,7 @@ export default function Header({
               ) : (
                 /* 일반 모드: 닉네임 + 수정 버튼 */
                 <div className='flex items-center gap-3'>
-                  <span className='text-[30px] font-bold text-main-gray'>
+                  <span className='text-[30px] font-bold text-main-gray whitespace-nowrap'>
                     {userData?.nickname}
                   </span>
                   <Button
@@ -138,6 +138,7 @@ export default function Header({
                       setEditNickname(userData?.nickname || "");
                       setIsEditing(true);
                     }}
+                    className='w-[70px]'
                   >
                     수정
                   </Button>
