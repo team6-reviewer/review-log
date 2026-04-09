@@ -18,8 +18,9 @@ exports.getTopMovies = async (req, res) => {
 // 프론트엔드로부터의 영화 검색 요청을 처리하는 컨트롤러
 exports.searchMovie = async (req, res) => {
   try {
-    // 쿼리 파라미터 처리
+    // 쿼리 파라미터 처리 (영화의 제목)
     const title = req.query.q;
+    // 누락되었으면 400번 에러 반환
     if (!title) {
       return res.status(400).json({message: "검색할 영화 제목이 빠져있음" });
     }
